@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <title>Upload Materials | Student Platform</title>
+    <style>
+        /* Additional styles for better UI */
+        .file-upload-area.dragover {
+            border-color: #8a56ff;
+            background: #f5f0ff;
+            transform: scale(1.02);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .upload-progress {
+            display: none;
+            margin-top: 10px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: linear-gradient(90deg, #8a56ff, #6c42cc);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        @media (max-width: 768px) {
+    .upload-form-container {
+        padding: 15px !important;
+    }
+    
+    .file-upload-area {
+        padding: 20px 10px !important;
+    }
+    
+    .upload-guidelines .guidelines-container {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .uploads-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Student Platform</h1>
+        <nav>
+            <a href="sell.html">Sell & Buy</a>
+            <a href="exchange.html">Exchange Book</a>
+            <a href="search.html">Search</a>
+            <a href="login.html" class="login-circle">Login</a>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="upload-hero">
+            <div class="upload-hero-content">
+                <h1>Upload Materials</h1>
+                <p class="upload-subtitle">Share study materials, notes, and resources with the student community.</p>
+                <div class="upload-stats">
+                    <div class="upload-stat">
+                        <span class="stat-number">1,000+</span>
+                        <span class="stat-label">Materials Shared</span>
+                    </div>
+                    <div class="upload-stat">
+                        <span class="stat-number">Free</span>
+                        <span class="stat-label">Always Free</span>
+                    </div>
+                    <div class="upload-stat">
+                        <span class="stat-number">5MB</span>
+                        <span class="stat-label">Max File Size</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Upload Form -->
+        <div class="upload-form-container">
+            <h2 class="form-title">Upload New Material</h2>
+            <p class="form-subtitle">Share helpful resources with fellow students</p>
+            
+            <form id="uploadForm">
+                <!-- Material Details -->
+                <div class="form-section">
+                    <h3 class="section-title">Material Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="itemName">
+                            Material/Book Name *
+                        </label>
+                        <input type="text" id="itemName" placeholder="e.g., Physics Notes, Math Formulas, Chemistry Guide" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemClass">
+                                Class/Grade *
+                            </label>
+                            <select id="itemClass" required>
+                                <option value="">Select Class/Grade</option>
+                                <option>All Levels</option>
+                                <option>1st Grade</option>
+                                <option>2nd Grade</option>
+                                <option>3rd Grade</option>
+                                <option>4th Grade</option>
+                                <option>5th Grade</option>
+                                <option>6th Grade</option>
+                                <option>7th Grade</option>
+                                <option>8th Grade</option>
+                                <option>9th Grade</option>
+                                <option>10th Grade</option>
+                                <option>11th Grade</option>
+                                <option>12th Grade</option>
+                                <option>University</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">
+                                Subject/Category *
+                            </label>
+                            <select id="subject" required>
+                                <option value="">Select Subject</option>
+                                <option>Mathematics</option>
+                                <option>Physics</option>
+                                <option>Chemistry</option>
+                                <option>Biology</option>
+                                <option>English</option>
+                                <option>History</option>
+                                <option>Geography</option>
+                                <option>Computer Science</option>
+                                <option>General Studies</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="docType">
+                                Document Type *
+                            </label>
+                            <select id="docType" required>
+                                <option value="">Select Type</option>
+                                <option value="PDF">PDF Document</option>
+                                <option value="DOC">Word Document</option>
+                                <option value="IMG">Image Files</option>
+                                <option value="PPT">Presentation</option>
+                                <option value="XLS">Spreadsheet</option>
+                                <option value="TXT">Text File</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fileSize">
+                                Approximate Size
+                            </label>
+                            <select id="fileSize">
+                                <option value="">Select Size</option>
+                                <option value="<1MB">Less than 1MB</option>
+                                <option value="1-2MB">1-2 MB</option>
+                                <option value="2-3MB">2-3 MB</option>
+                                <option value="3-5MB">3-5 MB</option>
+                                <option value=">5MB">5+ MB</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">
+                            Description *
+                        </label>
+                        <textarea id="description" placeholder="Describe what this material contains, topics covered, usefulness..." rows="4" required maxlength="500"></textarea>
+                        <div class="char-counter">0/500 characters</div>
+                    </div>
+                </div>
+
+                <!-- File Upload & Settings -->
+                <div class="form-section">
+                    <h3 class="section-title">File & Settings</h3>
+                    
+                    <div class="form-group">
+                        <label for="fileInput">
+                            Select File *
+                            <span class="file-hint">(Max 5MB, PDF, DOC, JPG, PNG allowed)</span>
+                        </label>
+                        <div class="file-upload-area" id="fileDropArea">
+                            <div class="upload-icon">📁</div>
+                            <p class="upload-text">Drag & drop files here or click to browse</p>
+                            <p class="upload-subtext">Supports: .pdf, .doc, .docx, .jpg, .png, .ppt, .pptx, .txt</p>
+                            <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.ppt,.pptx,.txt" hidden>
+                            <button type="button" class="browse-btn" id="browseBtn">
+                                Browse Files
+                            </button>
+                        </div>
+                        <div class="file-info" id="fileInfo"></div>
+                        <div class="upload-progress" id="uploadProgress">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="visibility">
+                                Visibility *
+                            </label>
+                            <select id="visibility" required>
+                                <option value="">Select Visibility</option>
+                                <option value="public">Public (All users)</option>
+                                <option value="registered">Registered Users Only</option>
+                                <option value="specific">Specific Board Only</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="licenseType">
+                                Usage License *
+                            </label>
+                            <select id="licenseType" required>
+                                <option value="">Select License</option>
+                                <option value="free">Free to Use & Share</option>
+                                <option value="educational">Educational Use Only</option>
+                                <option value="non-commercial">No Commercial Use</option>
+                                <option value="attribution">Attribution Required</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tags">
+                            Tags/Keywords
+                            <span class="optional-label">(Optional, separate with commas)</span>
+                        </label>
+                        <input type="text" id="tags" placeholder="e.g., formulas, solved exercises, past papers, notes">
+                        <div class="input-hint">Helps others find your material (max 5 tags)</div>
+                    </div>
+                </div>
+
+                <!-- Submit Section -->
+                <div class="form-submit-section">
+                    <div class="form-agreement">
+                        <input type="checkbox" id="uploadAgree" required>
+                        <label for="uploadAgree">
+                            I confirm that I have the right to share this material and it doesn't violate any copyrights
+                        </label>
+                    </div>
+
+                    <div class="submit-buttons">
+                        <button type="button" class="preview-btn" id="uploadPreviewBtn">
+                            Preview Upload
+                        </button>
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            Upload Material
+                        </button>
+                        <button type="reset" class="reset-btn">
+                            Clear Form
+                        </button>
+                    </div>
+
+                    <div id="uploadError" class="error-message"></div>
+                    <div id="successMessage" class="success-message"></div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Upload Guidelines -->
+        <section class="upload-guidelines">
+            <h2>Upload Guidelines</h2>
+            <div class="guidelines-container">
+                <div class="guideline">
+                    <div class="guideline-icon">✅</div>
+                    <div class="guideline-content">
+                        <h3>Allowed Content</h3>
+                        <p>Original notes, solved exercises, formulas sheets, educational guides, practice tests</p>
+                    </div>
+                </div>
+                <div class="guideline">
+                    <div class="guideline-icon">❌</div>
+                    <div class="guideline-content">
+                        <h3>Not Allowed</h3>
+                        <p>Copyrighted textbooks, answer keys from publishers, personal data, commercial content</p>
+                    </div>
+                </div>
+                <div class="guideline">
+                    <div class="guideline-icon">⚖️</div>
+                    <div class="guideline-content">
+                        <h3>Legal Notice</h3>
+                        <p>You retain ownership of your materials but grant educational use rights to the community</p>
+                    </div>
+                </div>
+                <div class="guideline">
+                    <div class="guideline-icon">⭐</div>
+                    <div class="guideline-content">
+                        <h3>Quality Tips</h3>
+                        <p>Use clear titles, proper descriptions, relevant tags, and keep files under 5MB for fast downloads</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Uploads Preview -->
+        <section class="recent-uploads">
+            <h2>Recently Uploaded</h2>
+            <div class="uploads-grid">
+                <div class="upload-item">
+                    <div class="upload-type pdf">PDF</div>
+                    <h3>Physics Formula Sheet</h3>
+                    <p class="upload-meta">10th Grade • FBISE • 2 days ago</p>
+                    <p class="upload-desc">Complete formula collection for 10th class physics with examples</p>
+                    <div class="upload-stats">
+                        <span>📥 45 Downloads</span>
+                        <span>⭐ 4.8</span>
+                    </div>
+                </div>
+                
+                <div class="upload-item">
+                    <div class="upload-type doc">DOC</div>
+                    <h3>Math Solved Exercises</h3>
+                    <p class="upload-meta">9th Grade • Punjab Board • 1 week ago</p>
+                    <p class="upload-desc">Step-by-step solutions for all chapter exercises</p>
+                    <div class="upload-stats">
+                        <span>📥 120 Downloads</span>
+                        <span>⭐ 4.9</span>
+                    </div>
+                </div>
+                
+                <div class="upload-item">
+                    <div class="upload-type image">IMG</div>
+                    <h3>Chemistry Diagrams</h3>
+                    <p class="upload-meta">All Levels • 3 days ago</p>
+                    <p class="upload-desc">High-quality diagrams of chemical structures and processes</p>
+                    <div class="upload-stats">
+                        <span>📥 85 Downloads</span>
+                        <span>⭐ 4.7</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <!-- YOUR FIREBASE CONFIG -->
+    <script src="firebase.js"></script>
+
+    <!-- YOUR AUTH FUNCTIONS -->
+    <script src="auth.js"></script>
+
+    <script>
+        // Upload Form JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadForm = document.getElementById('uploadForm');
+            const fileInput = document.getElementById('fileInput');
+            const fileDropArea = document.getElementById('fileDropArea');
+            const fileInfo = document.getElementById('fileInfo');
+            const description = document.getElementById('description');
+            const charCounter = document.querySelector('.char-counter');
+            const uploadError = document.getElementById('uploadError');
+            const successMessage = document.getElementById('successMessage');
+            const previewBtn = document.getElementById('uploadPreviewBtn');
+            const browseBtn = document.getElementById('browseBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const uploadProgress = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('progressBar');
+            const tagsInput = document.getElementById('tags');
+
+            // File upload handling
+            fileInput.addEventListener('change', handleFileSelect);
+            browseBtn.addEventListener('click', () => fileInput.click());
+            
+            // Drag and drop
+            ['dragover', 'dragenter'].forEach(event => {
+                fileDropArea.addEventListener(event, function(e) {
+                    e.preventDefault();
+                    this.classList.add('dragover');
+                });
+            });
+            
+            ['dragleave', 'dragend', 'drop'].forEach(event => {
+                fileDropArea.addEventListener(event, function(e) {
+                    e.preventDefault();
+                    this.classList.remove('dragover');
+                });
+            });
+            
+            fileDropArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileSelect({ target: fileInput });
+                }
+            });
+
+            function handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // Check file size (5MB limit)
+                const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+                if (file.size > maxSize) {
+                    showError(`File too large (${(file.size/1024/1024).toFixed(2)}MB). Max 5MB allowed.`);
+                    fileInput.value = '';
+                    return;
+                }
+                
+                // Check file type
+                const allowedTypes = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png', '.ppt', '.pptx', '.txt'];
+                const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+                
+                if (!allowedTypes.includes(fileExt)) {
+                    showError(`File type not allowed. Allowed: ${allowedTypes.join(', ')}`);
+                    fileInput.value = '';
+                    return;
+                }
+                
+                // Clear any previous errors
+                clearError();
+                
+                // Show file info
+                fileInfo.innerHTML = `
+                    <div style="color: #28a745;">
+                        ✅ <strong>${file.name}</strong><br>
+                        <small>Size: ${(file.size/1024).toFixed(0)}KB • Type: ${fileExt.toUpperCase()}</small>
+                    </div>
+                `;
+            }
+
+            // Character counter
+            description.addEventListener('input', function() {
+                const count = this.value.length;
+                charCounter.textContent = `${count}/500 characters`;
+                charCounter.style.color = count > 500 ? '#ff4444' : '#666';
+                if (count > 500) {
+                    this.value = this.value.substring(0, 500);
+                }
+            });
+
+            // Tags input limit
+            tagsInput.addEventListener('input', function() {
+                const tags = this.value.split(',').filter(tag => tag.trim());
+                if (tags.length > 5) {
+                    this.value = tags.slice(0, 5).join(', ');
+                    showError('Maximum 5 tags allowed');
+                    setTimeout(clearError, 3000);
+                }
+            });
+
+            function showError(message) {
+                uploadError.textContent = message;
+                uploadError.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+
+            function clearError() {
+                uploadError.textContent = '';
+                uploadError.style.display = 'none';
+            }
+
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                uploadError.style.display = 'none';
+            }
+
+            // Form validation
+            uploadForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                clearError();
+                
+                const itemName = document.getElementById('itemName').value.trim();
+                const itemClass = document.getElementById('itemClass').value;
+                const subject = document.getElementById('subject').value;
+                const docType = document.getElementById('docType').value;
+                const descriptionText = document.getElementById('description').value.trim();
+                const visibility = document.getElementById('visibility').value;
+                const licenseType = document.getElementById('licenseType').value;
+                const file = fileInput.files[0];
+                const tags = tagsInput.value.trim();
+
+                let errors = [];
+
+                if (!itemName) errors.push("Material name is required");
+                if (!itemClass) errors.push("Class/grade is required");
+                if (!subject) errors.push("Subject is required");
+                if (!docType) errors.push("Document type is required");
+                if (!descriptionText) errors.push("Description is required");
+                if (descriptionText.length < 20) errors.push("Description must be at least 20 characters");
+                if (!visibility) errors.push("Visibility setting is required");
+                if (!licenseType) errors.push("License type is required");
+                if (!file) errors.push("Please select a file to upload");
+                if (!document.getElementById('uploadAgree').checked) {
+                    errors.push("You must agree to the copyright statement");
+                }
+
+                if (errors.length > 0) {
+                    showError(errors.join('\n'));
+                    return;
+                }
+
+                // Simulate upload with progress
+                submitBtn.innerHTML = 'Uploading...';
+                submitBtn.disabled = true;
+                uploadProgress.style.display = 'block';
+                
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 10;
+                    progressBar.style.width = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // Show success message
+                        showSuccess(`✅ Material uploaded successfully!\n\n"${itemName}"\n\nYour material is now available to the community.`);
+                        
+                        // Reset form after delay
+                        setTimeout(() => {
+                            uploadForm.reset();
+                            fileInfo.innerHTML = '';
+                            uploadProgress.style.display = 'none';
+                            progressBar.style.width = '0%';
+                            submitBtn.innerHTML = 'Upload Material';
+                            submitBtn.disabled = false;
+                            charCounter.textContent = '0/500 characters';
+                            successMessage.style.display = 'none';
+                        }, 5000);
+                    }
+                }, 200);
+            });
+
+            // Preview button
+            previewBtn.addEventListener('click', function() {
+                const itemName = document.getElementById('itemName').value.trim();
+                const itemClass = document.getElementById('itemClass').value;
+                const subject = document.getElementById('subject').value;
+                const docType = document.getElementById('docType').value;
+                const descriptionText = document.getElementById('description').value.trim();
+                
+                if (!itemName) {
+                    showError('Please enter a material name to preview');
+                    return;
+                }
+                
+                let previewText = `📄 UPLOAD PREVIEW:\n\n`;
+                previewText += `Material: ${itemName}\n`;
+                previewText += `Class: ${itemClass || 'Not specified'}\n`;
+                previewText += `Subject: ${subject || 'Not specified'}\n`;
+                previewText += `Type: ${docType || 'Not specified'}\n`;
+                previewText += `Description: ${descriptionText.substring(0, 100)}${descriptionText.length > 100 ? '...' : ''}`;
+                
+                alert(previewText);
+            });
+
+            // Form reset handler
+            uploadForm.addEventListener('reset', function() {
+                fileInfo.innerHTML = '';
+                uploadProgress.style.display = 'none';
+                progressBar.style.width = '0%';
+                charCounter.textContent = '0/500 characters';
+                clearError();
+                successMessage.style.display = 'none';
+                submitBtn.innerHTML = 'Upload Material';
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
+            }
+        });
+    </script>
+
+
+<script>// Header shrink on scroll for mobile
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const shrinkThreshold = 50; // Pixels to scroll before shrinking
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (window.innerWidth <= 768) { // Mobile only
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+        
+        // Optional: Hide header on scroll down, show on scroll up
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up
+            header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollTop = scrollTop;
+    } else {
+        // Desktop behavior (keep your existing desktop shrink logic)
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+    }
+});
+
+// Optional: Add parallax-like effect for mobile
+window.addEventListener('scroll', function() {
+    if (window.innerWidth <= 768) {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.3; // Adjust this value for intensity
+        
+        // Add subtle background color change on scroll
+        if (header && scrolled > 20) {
+            const opacity = Math.min(scrolled / 200, 0.95);
+            header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+            header.style.backdropFilter = 'blur(10px)';
+        } else if (header) {
+            header.style.backgroundColor = 'white';
+            header.style.backdropFilter = 'none';
+        }
+    }
+});</script>
+</body>
+</html>

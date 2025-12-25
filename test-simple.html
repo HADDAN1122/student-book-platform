@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+        }
+        .tab.active {
+            background: #007bff;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Tab Test</h1>
+    
+    <div class="tabs">
+        <button class="tab active" data-tab="sell">Sell Book</button>
+        <button class="tab" data-tab="buy">Buy Book</button>
+    </div>
+    
+    <div id="sellForm" class="tab-content active" data-tab="sell">
+        <h2>Sell Form</h2>
+        <input type="text" placeholder="Book name">
+        <button>Submit Sell</button>
+    </div>
+    
+    <div id="buyForm" class="tab-content" data-tab="buy">
+        <h2>Buy Form</h2>
+        <input type="text" placeholder="Book to buy">
+        <button>Submit Buy</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Page loaded!");
+            
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    console.log("Tab clicked:", this.textContent);
+                    
+                    // Remove active from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active to clicked tab
+                    this.classList.add('active');
+                    
+                    // Get target tab
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show selected tab content
+                    const targetContent = document.querySelector(`.tab-content[data-tab="${targetTab}"]`);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                        console.log("Showing:", targetTab);
+                    }
+                });
+            });
+            
+            console.log("Tabs initialized");
+        });
+    </script>
+</body>
+</html>

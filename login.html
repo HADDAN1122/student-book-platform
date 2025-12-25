@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Login & Sign Up | Student Platform</title>
+    <style>
+        /* Additional styles for password strength */
+        .password-strength {
+            margin-top: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #eee;
+            display: none;
+        }
+        
+        .password-strength.visible {
+            display: block;
+        }
+        
+        .strength-bars {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+            height: 8px;
+        }
+        
+        .strength-bar {
+            flex: 1;
+            background: #eee;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .strength-bar.active {
+            background: #8a56ff;
+        }
+        
+        .strength-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .strength-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .strength-level {
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: #eee;
+            color: #666;
+        }
+        
+        .strength-level.none { background: #eee; color: #666; }
+        .strength-level.weak { background: #ff4444; color: white; }
+        .strength-level.fair { background: #ff9800; color: white; }
+        .strength-level.good { background: #ffc107; color: #333; }
+        .strength-level.strong { background: #4caf50; color: white; }
+        
+        .password-match {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .password-match.visible {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .password-match.matching {
+            background: #e8f5e9;
+            color: #4caf50;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .password-match.not-matching {
+            background: #ffebee;
+            color: #f44336;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .password-match::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        .password-match.matching::before {
+            content: '✓';
+            background: #4caf50;
+            color: white;
+        }
+        
+        .password-match.not-matching::before {
+            content: '✗';
+            background: #ff4444;
+            color: white;
+        }
+        
+        /* Monkey emoji styles */
+        .toggle-password {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-password:hover {
+            transform: scale(1.2);
+        }
+        
+        /* Auth status improvements */
+        .auth-status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .auth-status.visible {
+            display: block;
+        }
+        
+        .auth-status.loading {
+            background: #fff8e1;
+            color: #ff9800;
+            border: 1px solid #ffecb3;
+        }
+        
+        .auth-status.success {
+            background: #e8f5e9;
+            color: #4caf50;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .auth-status.error {
+            background: #ffebee;
+            color: #f44336;
+            border: 1px solid #ffcdd2;
+            white-space: pre-line;
+        }
+        
+        /* Test button */
+        .test-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Student Platform</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html" class="login-circle">Login</a>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="auth-hero">
+            <div class="auth-hero-content">
+                <h1>Welcome Back</h1>
+                <p class="auth-subtitle">Access your account or join our community of students</p>
+            </div>
+        </section>
+
+        <!-- Auth Container -->
+        <div class="auth-container">
+            <!-- Tabs for Login/Signup -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="loginTab" data-tab="login">Login</button>
+                <button class="auth-tab" id="signupTab" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <h2 class="auth-form-title">Login to Your Account</h2>
+                
+                <div class="form-group">
+                    <label for="loginEmail">Email Address *</label>
+                    <input type="email" id="loginEmail" placeholder="student@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password *</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-password" data-target="loginPassword">👁️</button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberLogin">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Login to Account
+                </button>
+
+                <div class="auth-divider">
+                    <span>or continue with</span>
+                </div>
+
+                <div class="social-auth">
+                    <button type="button" class="social-btn google-btn">
+                        <span class="social-icon">G</span>
+                        Google
+                    </button>
+                    <button type="button" class="social-btn facebook-btn">
+                        <span class="social-icon">f</span>
+                        Facebook
+                    </button>
+                </div>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form">
+                <h2 class="auth-form-title">Create New Account</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signupFirstName">First Name *</label>
+                        <input type="text" id="signupFirstName" placeholder="Ali" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupLastName">Last Name *</label>
+                        <input type="text" id="signupLastName" placeholder="Khan" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupEmail">Email Address *</label>
+                    <input type="email" id="signupEmail" placeholder="student@example.com" required>
+                    <div class="input-hint">Use your university email if available</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signupPassword">Password *</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="signupPassword" placeholder="Create password" required>
+                            <button type="button" class="toggle-password" data-target="signupPassword">👁️</button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bars">
+                                <div class="strength-bar" id="bar1"></div>
+                                <div class="strength-bar" id="bar2"></div>
+                                <div class="strength-bar" id="bar3"></div>
+                                <div class="strength-bar" id="bar4"></div>
+                            </div>
+                            <div class="strength-info">
+                                <div class="strength-text">Password strength</div>
+                                <div class="strength-level" id="strengthLevel">None</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password *</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="signupConfirmPassword" placeholder="Confirm password" required>
+                            <button type="button" class="toggle-password" data-target="signupConfirmPassword">👁️</button>
+                        </div>
+                        <div class="password-match" id="passwordMatch">
+                            <!-- Content will be added by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupStudentId">Student ID (Optional)</label>
+                    <input type="text" id="signupStudentId" placeholder="University registration number">
+                    <div class="input-hint">Helps verify student status for special features</div>
+                </div>
+
+                <div class="form-agreement">
+                    <input type="checkbox" id="termsAgree" required>
+                    <label for="termsAgree">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <div class="form-agreement">
+                    <input type="checkbox" id="newsletter">
+                    <label for="newsletter">
+                        Send me updates about new features and community exchanges
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn" id="signupSubmitBtn">
+                    Create Account
+                </button>
+
+                <div class="existing-account">
+                    Already have an account? <a href="#" class="switch-to-login">Click here to login</a>
+                </div>
+            </form>
+
+            <!-- Auth Status Messages -->
+            <div id="authStatus" class="auth-status"></div>
+        </div>
+            
+                
+
+        <!-- Test Button -->
+        <button onclick="testFirebaseConnection()" class="test-btn">
+            🧪 Test Firebase Connection
+        </button>
+    </main>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script src="firebase.js"></script>
+
+    <!-- Auth Functions -->
+    <script src="auth.js"></script>
+
+    <!-- Page-specific JavaScript -->
+    <script>
+        // Page initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Login page loaded");
+            
+            // Initialize all components
+            initTabSwitching();
+            initPasswordStrength();
+            initPasswordVisibility();
+            initFormSubmissions();
+            initSwitchLinks();
+            
+            // Check if user is already logged in
+            checkExistingLogin();
+        });
+        
+        // Tab switching functionality
+        function initTabSwitching() {
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            
+            loginTab.addEventListener('click', () => switchTab('login'));
+            signupTab.addEventListener('click', () => switchTab('signup'));
+            
+            function switchTab(tab) {
+                // Update active tab
+                loginTab.classList.toggle('active', tab === 'login');
+                signupTab.classList.toggle('active', tab === 'signup');
+                
+                // Show/hide forms
+                loginForm.classList.toggle('active', tab === 'login');
+                signupForm.classList.toggle('active', tab === 'signup');
+                
+                // Clear status messages
+                clearAuthStatus();
+            }
+        }
+        
+        // Password strength indicator
+        function initPasswordStrength() {
+            const passwordInput = document.getElementById('signupPassword');
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strengthLevel = document.getElementById('strengthLevel');
+            const bars = [
+                document.getElementById('bar1'),
+                document.getElementById('bar2'),
+                document.getElementById('bar3'),
+                document.getElementById('bar4')
+            ];
+            
+            const confirmInput = document.getElementById('signupConfirmPassword');
+            const matchDiv = document.getElementById('passwordMatch');
+            
+            // Password strength checker
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                
+                if (password.length === 0) {
+                    strengthDiv.classList.remove('visible');
+                    return;
+                }
+                
+                strengthDiv.classList.add('visible');
+                
+                // Calculate strength
+                let score = 0;
+                
+                // Length check
+                if (password.length >= 8) score++;
+                if (password.length >= 12) score++;
+                
+                // Complexity checks
+                if (/[A-Z]/.test(password)) score++; // Uppercase
+                if (/[a-z]/.test(password)) score++; // Lowercase
+                if (/[0-9]/.test(password)) score++; // Numbers
+                if (/[^A-Za-z0-9]/.test(password)) score++; // Special chars
+                
+                // Cap score at 4
+                score = Math.min(score, 4);
+                
+                // Update bars
+                bars.forEach((bar, index) => {
+                    bar.classList.toggle('active', index < score);
+                });
+                
+                // Update strength level text
+                let level = 'none';
+                let levelText = 'None';
+                
+                if (score === 1) {
+                    level = 'weak';
+                    levelText = 'Weak';
+                } else if (score === 2) {
+                    level = 'fair';
+                    levelText = 'Fair';
+                } else if (score === 3) {
+                    level = 'good';
+                    levelText = 'Good';
+                } else if (score === 4) {
+                    level = 'strong';
+                    levelText = 'Strong';
+                }
+                
+                strengthLevel.className = 'strength-level ' + level;
+                strengthLevel.textContent = levelText;
+                
+                // Check password match
+                checkPasswordMatch();
+            });
+            
+            // Password match checker
+            confirmInput.addEventListener('input', checkPasswordMatch);
+            
+            function checkPasswordMatch() {
+                const password = passwordInput.value;
+                const confirmPassword = confirmInput.value;
+                
+                if (confirmPassword.length === 0) {
+                    matchDiv.classList.remove('visible');
+                    return;
+                }
+                
+                matchDiv.classList.add('visible');
+                
+                if (password === confirmPassword && password.length > 0) {
+                    matchDiv.className = 'password-match matching visible';
+                    matchDiv.innerHTML = '<div>✓</div><div>Passwords match</div>';
+                } else {
+                    matchDiv.className = 'password-match not-matching visible';
+                    matchDiv.innerHTML = '<div>✗</div><div>Passwords do not match</div>';
+                }
+            }
+        }
+        
+        // Password visibility toggle
+        function initPasswordVisibility() {
+            document.querySelectorAll('.toggle-password').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    const isPassword = input.type === 'password';
+                    
+                    // Toggle input type
+                    input.type = isPassword ? 'text' : 'password';
+                    
+                    // Update button text
+                    this.textContent = isPassword ? '🙈' : '👁️';
+                    
+                    // Add animation
+                    this.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+        }
+        
+        // Form submissions
+        function initFormSubmissions() {
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                const rememberMe = document.getElementById('rememberLogin').checked;
+                
+                // Validation
+                if (!email || !password) {
+                    showAuthStatus('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Show loading
+                showAuthStatus('🔐 Logging in...', 'loading');
+                const submitBtn = this.querySelector('.submit-btn');
+                submitBtn.disabled = true;
+                
+                try {
+                    // Attempt login
+                    const result = await loginUser(email, password);
+                    
+                    if (result.success) {
+                        showAuthStatus('✅ Login successful! Redirecting...', 'success');
+                        
+                        // Store remember me preference
+                        if (rememberMe) {
+                            localStorage.setItem('rememberLogin', 'true');
+                        }
+                        
+                        // Redirect after delay
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } else {
+                        showAuthStatus(`❌ ${result.error}`, 'error');
+                        submitBtn.disabled = false;
+                    }
+                } catch (error) {
+                    showAuthStatus(`❌ Error: ${error.message}`, 'error');
+                    submitBtn.disabled = false;
+                }
+            });
+            
+            // Signup form
+            document.getElementById('signupForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const firstName = document.getElementById('signupFirstName').value.trim();
+                const lastName = document.getElementById('signupLastName').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+                const password = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('signupConfirmPassword').value;
+                const studentId = document.getElementById('signupStudentId').value.trim();
+                const termsAgree = document.getElementById('termsAgree').checked;
+                
+                // Validation
+                let errors = [];
+                if (!firstName) errors.push("First name is required");
+                if (!lastName) errors.push("Last name is required");
+                if (!email.includes('@')) errors.push("Valid email address is required");
+                if (password.length < 6) errors.push("Password must be at least 6 characters");
+                if (password !== confirmPassword) errors.push("Passwords do not match");
+                if (!termsAgree) errors.push("You must agree to the terms and conditions");
+                
+                if (errors.length > 0) {
+                    showAuthStatus(errors.join('\n'), 'error');
+                    return;
+                }
+                
+                // Show loading
+                showAuthStatus('📝 Creating your account...', 'loading');
+                const submitBtn = document.getElementById('signupSubmitBtn');
+                submitBtn.disabled = true;
+                
+                try {
+                    // Attempt signup
+                    const result = await signupUser(email, password, {
+                        firstName: firstName,
+                        lastName: lastName,
+                        studentId: studentId || ''
+                    });
+                    
+                    if (result.success) {
+                        showAuthStatus(`✅ Account created successfully!\nYour avatar: ${result.emoji}\nRedirecting...`, 'success');
+                        
+                        // Redirect after delay
+                        setTimeout(() => {
+                            window.location.href = 'profile.html';
+                        }, 1500);
+                    } else {
+                        showAuthStatus(`❌ ${result.error}`, 'error');
+                        submitBtn.disabled = false;
+                    }
+                } catch (error) {
+                    showAuthStatus(`❌ Error: ${error.message}`, 'error');
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+        
+        // Switch between login/signup links
+        function initSwitchLinks() {
+            // Switch to login from signup form
+            document.querySelector('.switch-to-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('loginTab').click();
+            });
+            
+            // Switch to signup from login (if needed)
+            const switchToSignup = document.querySelector('.switch-to-signup');
+            if (switchToSignup) {
+                switchToSignup.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('signupTab').click();
+                });
+            }
+        }
+        
+        // Check if user is already logged in
+        function checkExistingLogin() {
+            // Check Firebase auth state
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    console.log("User already logged in:", user.email);
+                    // If user is already logged in and tries to access login page,
+                    // we can redirect them to home page
+                    if (window.location.pathname.includes('login.html')) {
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    }
+                }
+            });
+            
+            // Check remember me
+            if (localStorage.getItem('rememberLogin') === 'true') {
+                document.getElementById('rememberLogin').checked = true;
+            }
+        }
+        
+        // Show auth status messages
+        function showAuthStatus(message, type) {
+            const statusDiv = document.getElementById('authStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = `auth-status ${type} visible`;
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusDiv.classList.remove('visible');
+                }, 3000);
+            }
+            
+            // Scroll to status
+            statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // Clear auth status
+        function clearAuthStatus() {
+            const statusDiv = document.getElementById('authStatus');
+            statusDiv.className = 'auth-status';
+            statusDiv.textContent = '';
+        }
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
+            }
+        });
+        
+        // Test Firebase connection
+        function testFirebaseConnection() {
+            if (typeof testFirebaseConnection === 'function') {
+                testFirebaseConnection();
+            } else {
+                console.log("Testing Firebase connection...");
+                console.log("Auth service:", auth ? "✅ Loaded" : "❌ Missing");
+                console.log("Firestore service:", db ? "✅ Loaded" : "❌ Missing");
+                console.log("Current user:", auth.currentUser ? auth.currentUser.email : "Not logged in");
+                alert("Check browser console (F12) for Firebase status");
+            }
+        }
+
+        // Forgot Password function
+async function forgotPassword(email) {
+    if (!email) {
+        showError("Please enter your email address");
+        return;
+    }
+    
+    try {
+        showLoading("Sending password reset email...");
+        await auth.sendPasswordResetEmail(email);
+        showSuccess(`Password reset email sent to ${email}. Please check your inbox.`);
+    } catch (error) {
+        console.error("Password reset error:", error);
+        let errorMessage = "Error sending password reset email. ";
+        
+        switch(error.code) {
+            case 'auth/user-not-found':
+                errorMessage += "No account found with this email.";
+                break;
+            case 'auth/invalid-email':
+                errorMessage += "Invalid email address.";
+                break;
+            case 'auth/too-many-requests':
+                errorMessage += "Too many requests. Please try again later.";
+                break;
+            default:
+                errorMessage += error.message;
+        }
+        
+        showError(errorMessage);
+    } finally {
+        hideLoading();
+    }
+}
+
+// Call this function when user clicks "Forgot Password" link
+// Example HTML in login.html:
+// <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+
+function showForgotPassword() {
+    const email = prompt("Enter your email address to reset password:");
+    if (email) {
+        forgotPassword(email);
+    }
+}
+    </script>
+</body>
+</html>

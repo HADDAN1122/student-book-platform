@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <title>Educational Games | Student Platform</title>
+    <style>
+        /* Games Page Styles */
+        .games-hero {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffd166 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .games-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .games-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .games-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .game-stat {
+            text-align: center;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .games-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .game-icon {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 20px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .game-title {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        
+        .game-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .game-features {
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .game-features li {
+            padding: 5px 0;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .game-features li:before {
+            content: "✓";
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .play-btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-weight: 600;
+            margin-top: auto;
+        }
+        
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.3);
+        }
+        
+        .game-area {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            min-height: 500px;
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .game-stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat-box {
+            background: #f8f9fa;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #6a11cb;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #5a6268;
+        }
+        
+        .question-box {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .question-text {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .option-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        
+        .option-btn:hover {
+            border-color: #6a11cb;
+            background: #f5f0ff;
+        }
+        
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .option-btn.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .timer-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd166);
+            width: 100%;
+            transition: width 1s linear;
+        }
+        
+        .scramble-word {
+            font-size: 2.5rem;
+            letter-spacing: 10px;
+            font-weight: bold;
+            color: #333;
+            margin: 30px 0;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .scramble-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #6a11cb;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 30px auto;
+            max-width: 600px;
+        }
+        
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            color: white;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .memory-card.flipped {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card.matched {
+            background: #4CAF50;
+            cursor: default;
+        }
+        
+        .game-result {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .result-score {
+            font-size: 2.5rem;
+            color: #6a11cb;
+            margin: 20px 0;
+        }
+        
+        .hint-btn {
+            background: #ffd166;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .hint-text {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            color: #856404;
+            display: none;
+        }
+        
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .difficulty-btn {
+            padding: 10px 20px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .difficulty-btn.active {
+            background: #6a11cb;
+            color: white;
+            border-color: #6a11cb;
+        }
+        
+        /* Modal for game instructions */
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        /* Leaderboard */
+        .leaderboard {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+        
+        .leaderboard h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .leaderboard-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            color: #333;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .leaderboard-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .leaderboard-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .game-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .stat-box {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+    .games-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+    }
+    
+    .game-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .difficulty-selector {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .difficulty-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Student Platform</h1>
+        <nav>
+             <a href="index.html">Home</a>
+            <a href="login.html" class="login-circle">Login</a>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="games-hero">
+            <h1>🎮 Educational Games</h1>
+            <p>Take a fun break! Challenge your mind with these educational mini-games.</p>
+            <div class="games-stats">
+                <div class="game-stat">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Games Available</span>
+                </div>
+                <div class="game-stat">
+                    <span class="stat-number">Free</span>
+                    <span class="stat-label">Always Free to Play</span>
+                </div>
+                <div class="game-stat">
+                    <span class="stat-number">5 min</span>
+                    <span class="stat-label">Quick Brain Break</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="games-container">
+            <!-- Games Selection Grid -->
+            <div class="games-grid" id="gamesGrid">
+                <!-- Game 1: Math Quiz -->
+                <div class="game-card" data-game="math">
+                    <div class="game-icon">🧮</div>
+                    <h2 class="game-title">Math Quiz Challenge</h2>
+                    <p class="game-description">Test your mental math skills! Solve as many problems as you can in 60 seconds. Perfect for quick brain exercise.</p>
+                    <ul class="game-features">
+                        <li>Addition, subtraction, multiplication</li>
+                        <li>60-second challenge mode</li>
+                        <li>3 difficulty levels</li>
+                        <li>Score tracking</li>
+                    </ul>
+                    <button class="play-btn" onclick="startGame('math')">Play Now</button>
+                </div>
+
+                <!-- Game 2: Word Scramble -->
+                <div class="game-card" data-game="word">
+                    <div class="game-icon">🔤</div>
+                    <h2 class="game-title">Word Scramble</h2>
+                    <p class="game-description">Unscramble educational vocabulary words! Improve your spelling and learn new terms while having fun.</p>
+                    <ul class="game-features">
+                        <li>Educational vocabulary</li>
+                        <li>Subject-specific words</li>
+                        <li>Hint system</li>
+                        <li>Progressive difficulty</li>
+                    </ul>
+                    <button class="play-btn" onclick="startGame('word')">Play Now</button>
+                </div>
+
+                <!-- Game 3: Memory Match -->
+                <div class="game-card" data-game="memory">
+                    <div class="game-icon">🧩</div>
+                    <h2 class="game-title">Quick Match</h2>
+                    <p class="game-description">Match educational terms with their definitions! Improve your memory and learn concepts through association.</p>
+                    <ul class="game-features">
+                        <li>Term-definition matching</li>
+                        <li>Memory training</li>
+                        <li>Educational content</li>
+                        <li>Timer challenge</li>
+                    </ul>
+                    <button class="play-btn" onclick="startGame('memory')">Play Now</button>
+                </div>
+            </div>
+
+            <!-- Game Area (Hidden until game starts) -->
+            <div class="game-area" id="gameArea">
+                <!-- Content will be loaded dynamically -->
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="leaderboard">
+                <h2>🏆 Top Scores</h2>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Game</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                        <!-- Scores will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Instructions Modal -->
+        <div class="game-modal" id="instructionsModal">
+            <div class="modal-content">
+                <h2 id="modalTitle">Game Instructions</h2>
+                <div id="modalInstructions"></div>
+                <button class="play-btn" onclick="closeInstructions()" style="margin-top: 20px; width: 100%;">Start Game</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Game Data
+        const gameData = {
+            currentGame: null,
+            score: 0,
+            timeLeft: 60,
+            level: 1,
+            timer: null,
+            gameActive: false
+        };
+
+        // Math Quiz Data
+        const mathQuestions = {
+            easy: [
+                { question: "15 + 27 = ?", options: ["42", "43", "44", "45"], answer: 0 },
+                { question: "8 × 6 = ?", options: ["46", "48", "50", "52"], answer: 1 },
+                { question: "64 ÷ 8 = ?", options: ["6", "7", "8", "9"], answer: 2 },
+                { question: "35 - 17 = ?", options: ["16", "17", "18", "19"], answer: 2 },
+                { question: "9 × 7 = ?", options: ["61", "63", "65", "67"], answer: 1 },
+                { question: "12 × 12 = ?", options: ["144", "124", "134", "154"], answer: 0 },
+                { question: "56 ÷ 7 = ?", options: ["7", "8", "9", "10"], answer: 1 },
+                { question: "29 + 43 = ?", options: ["71", "72", "73", "74"], answer: 1 },
+                { question: "17 × 3 = ?", options: ["49", "51", "53", "55"], answer: 1 },
+                { question: "81 ÷ 9 = ?", options: ["8", "9", "10", "11"], answer: 1 }
+            ],
+            medium: [
+                { question: "15 × 15 = ?", options: ["225", "215", "235", "245"], answer: 0 },
+                { question: "127 + 89 = ?", options: ["216", "215", "217", "218"], answer: 0 },
+                { question: "256 ÷ 16 = ?", options: ["15", "16", "17", "18"], answer: 1 },
+                { question: "37 × 8 = ?", options: ["296", "286", "276", "306"], answer: 0 },
+                { question: "144 ÷ 12 = ?", options: ["11", "12", "13", "14"], answer: 1 },
+                { question: "89 - 47 = ?", options: ["41", "42", "43", "44"], answer: 1 },
+                { question: "13 × 14 = ?", options: ["182", "172", "192", "202"], answer: 0 },
+                { question: "225 ÷ 15 = ?", options: ["14", "15", "16", "17"], answer: 1 },
+                { question: "67 + 89 = ?", options: ["155", "156", "157", "158"], answer: 1 },
+                { question: "19 × 6 = ?", options: ["113", "114", "115", "116"], answer: 1 }
+            ],
+            hard: [
+                { question: "17 × 23 = ?", options: ["391", "381", "401", "411"], answer: 0 },
+                { question: "256 ÷ 8 = ?", options: ["31", "32", "33", "34"], answer: 1 },
+                { question: "89 × 7 = ?", options: ["623", "613", "633", "643"], answer: 0 },
+                { question: "144 ÷ 9 = ?", options: ["15", "16", "17", "18"], answer: 1 },
+                { question: "37 × 12 = ?", options: ["444", "434", "454", "464"], answer: 0 },
+                { question: "225 ÷ 25 = ?", options: ["8", "9", "10", "11"], answer: 1 },
+                { question: "14 × 15 = ?", options: ["210", "200", "220", "230"], answer: 0 },
+                { question: "169 ÷ 13 = ?", options: ["12", "13", "14", "15"], answer: 1 },
+                { question: "27 × 18 = ?", options: ["486", "476", "496", "506"], answer: 0 },
+                { question: "324 ÷ 18 = ?", options: ["17", "18", "19", "20"], answer: 1 }
+            ]
+        };
+
+        // Word Scramble Data
+        const wordBank = {
+            science: [
+                { word: "PHOTOSYNTHESIS", hint: "Process plants use to make food" },
+                { word: "MITOCHONDRIA", hint: "Powerhouse of the cell" },
+                { word: "GRAVITATION", hint: "Force that pulls objects toward Earth" },
+                { word: "EVAPORATION", hint: "Liquid turning into gas" },
+                { word: "ACCELERATION", hint: "Rate of change of velocity" }
+            ],
+            math: [
+                { word: "PYTHAGORAS", hint: "Famous triangle theorem" },
+                { word: "QUADRATIC", hint: "Type of equation with x²" },
+                { word: "GEOMETRY", hint: "Study of shapes and angles" },
+                { word: "CALCULUS", hint: "Mathematics of change" },
+                { word: "TRIGONOMETRY", hint: "Study of triangles and angles" }
+            ],
+            english: [
+                { word: "METAPHOR", hint: "Figure of speech comparing things" },
+                { word: "SYNONYM", hint: "Word with similar meaning" },
+                { word: "ANTONYM", hint: "Word with opposite meaning" },
+                { word: "ADJECTIVE", hint: "Word that describes a noun" },
+                { word: "PRONUNCIATION", hint: "How a word is spoken" }
+            ]
+        };
+
+        // Memory Game Data
+        const memoryPairs = [
+            { term: "Photosynthesis", definition: "Process plants use to make food" },
+            { term: "Gravity", definition: "Force that pulls objects toward Earth" },
+            { term: "Mitochondria", definition: "Powerhouse of the cell" },
+            { term: "Atom", definition: "Basic unit of matter" },
+            { term: "Equation", definition: "Mathematical statement of equality" },
+            { term: "Geometry", definition: "Study of shapes and angles" },
+            { term: "Metaphor", definition: "Figure of speech comparing things" },
+            { term: "Synonym", definition: "Word with similar meaning" }
+        ];
+
+        // DOM Elements
+        const gamesGrid = document.getElementById('gamesGrid');
+        const gameArea = document.getElementById('gameArea');
+        const leaderboardBody = document.getElementById('leaderboardBody');
+        const instructionsModal = document.getElementById('instructionsModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalInstructions = document.getElementById('modalInstructions');
+
+        // Start Game Function
+        function startGame(gameType) {
+            gameData.currentGame = gameType;
+            gameData.score = 0;
+            gameData.timeLeft = 60;
+            gameData.level = 1;
+            gameData.gameActive = true;
+            
+            // Hide games grid, show game area
+            gamesGrid.style.display = 'none';
+            gameArea.style.display = 'block';
+            
+            // Load game instructions
+            showInstructions(gameType);
+        }
+
+        // Show Instructions
+        function showInstructions(gameType) {
+            const instructions = {
+                math: `
+                    <h3>Math Quiz Challenge</h3>
+                    <p><strong>How to Play:</strong></p>
+                    <ul>
+                        <li>Solve math problems as quickly as possible</li>
+                        <li>You have 60 seconds to answer</li>
+                        <li>Each correct answer: +10 points</li>
+                        <li>Each wrong answer: -5 seconds</li>
+                        <li>Difficulty increases every 5 questions</li>
+                    </ul>
+                    <p><strong>Controls:</strong></p>
+                    <ul>
+                        <li>Click on the correct answer</li>
+                        <li>Watch the timer!</li>
+                        <li>Try to beat your high score</li>
+                    </ul>
+                `,
+                word: `
+                    <h3>Word Scramble</h3>
+                    <p><strong>How to Play:</strong></p>
+                    <ul>
+                        <li>Unscramble the educational word</li>
+                        <li>Type your answer in the input box</li>
+                        <li>Press Enter or click Submit</li>
+                        <li>Each correct word: +15 points</li>
+                        <li>Use hint if needed (-5 points)</li>
+                    </ul>
+                    <p><strong>Controls:</strong></p>
+                    <ul>
+                        <li>Type the unscrambled word</li>
+                        <li>Use hints for difficult words</li>
+                        <li>Words get longer as you progress</li>
+                    </ul>
+                `,
+                memory: `
+                    <h3>Quick Match Game</h3>
+                    <p><strong>How to Play:</strong></p>
+                    <ul>
+                        <li>Match educational terms with definitions</li>
+                        <li>Click cards to flip them</li>
+                        <li>Find matching pairs</li>
+                        <li>Complete all matches before time runs out</li>
+                        <li>Each match: +20 points</li>
+                    </ul>
+                    <p><strong>Controls:</strong></p>
+                    <ul>
+                        <li>Click on cards to flip</li>
+                        <li>Remember card positions</li>
+                        <li>Match all pairs quickly</li>
+                    </ul>
+                `
+            };
+            
+            modalTitle.textContent = `${gameType.charAt(0).toUpperCase() + gameType.slice(1)} Game Instructions`;
+            modalInstructions.innerHTML = instructions[gameType];
+            instructionsModal.style.display = 'flex';
+        }
+
+        // Close Instructions and Start Game
+        function closeInstructions() {
+            instructionsModal.style.display = 'none';
+            loadGame(gameData.currentGame);
+        }
+
+        // Load Game
+        function loadGame(gameType) {
+            gameArea.innerHTML = '';
+            
+            switch(gameType) {
+                case 'math':
+                    loadMathGame();
+                    break;
+                case 'word':
+                    loadWordGame();
+                    break;
+                case 'memory':
+                    loadMemoryGame();
+                    break;
+            }
+        }
+
+        // Math Game
+        function loadMathGame() {
+            gameArea.innerHTML = `
+                <div class="game-header">
+                    <h2>🧮 Math Quiz Challenge</h2>
+                    <div class="game-stats">
+                        <div class="stat-box">
+                            <span class="stat-value" id="score">0</span>
+                            <span class="stat-label">Score</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="timer">60</span>
+                            <span class="stat-label">Time</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="level">1</span>
+                            <span class="stat-label">Level</span>
+                        </div>
+                    </div>
+                    <button class="back-btn" onclick="endGame()">Quit Game</button>
+                </div>
+                
+                <div class="timer-bar">
+                    <div class="timer-fill" id="timerFill"></div>
+                </div>
+                
+                <div id="questionContainer"></div>
+                
+                <div class="difficulty-selector">
+                    <button class="difficulty-btn ${gameData.level === 1 ? 'active' : ''}" onclick="setDifficulty('easy')">Easy</button>
+                    <button class="difficulty-btn ${gameData.level === 2 ? 'active' : ''}" onclick="setDifficulty('medium')">Medium</button>
+                    <button class="difficulty-btn ${gameData.level === 3 ? 'active' : ''}" onclick="setDifficulty('hard')">Hard</button>
+                </div>
+            `;
+            
+            startMathGame();
+        }
+
+        function startMathGame() {
+            updateMathDisplay();
+            askMathQuestion();
+            startTimer();
+        }
+
+        function setDifficulty(difficulty) {
+            if (difficulty === 'easy') gameData.level = 1;
+            if (difficulty === 'medium') gameData.level = 2;
+            if (difficulty === 'hard') gameData.level = 3;
+            updateMathDisplay();
+            askMathQuestion();
+        }
+
+        function updateMathDisplay() {
+            document.getElementById('score').textContent = gameData.score;
+            document.getElementById('timer').textContent = gameData.timeLeft;
+            document.getElementById('level').textContent = gameData.level;
+            document.getElementById('timerFill').style.width = `${(gameData.timeLeft / 60) * 100}%`;
+        }
+
+        function askMathQuestion() {
+            const difficulties = ['easy', 'medium', 'hard'];
+            const currentDifficulty = difficulties[gameData.level - 1];
+            const questions = mathQuestions[currentDifficulty];
+            const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+            
+            const questionContainer = document.getElementById('questionContainer');
+            questionContainer.innerHTML = `
+                <div class="question-box">
+                    <div class="question-text">${randomQuestion.question}</div>
+                    <div class="options-grid">
+                        ${randomQuestion.options.map((option, index) => `
+                            <button class="option-btn" onclick="checkMathAnswer(${index}, ${randomQuestion.answer})">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkMathAnswer(selectedIndex, correctIndex) {
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            buttons.forEach((btn, index) => {
+                if (index === correctIndex) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex && index !== correctIndex) {
+                    btn.classList.add('wrong');
+                }
+                btn.disabled = true;
+            });
+            
+            if (selectedIndex === correctIndex) {
+                gameData.score += 10;
+                // Show correct feedback
+                setTimeout(() => {
+                    askMathQuestion();
+                    updateMathDisplay();
+                }, 1000);
+            } else {
+                gameData.timeLeft -= 5;
+                // Show wrong feedback
+                setTimeout(() => {
+                    askMathQuestion();
+                    updateMathDisplay();
+                }, 1500);
+            }
+        }
+
+        // Word Scramble Game
+        function loadWordGame() {
+            gameArea.innerHTML = `
+                <div class="game-header">
+                    <h2>🔤 Word Scramble</h2>
+                    <div class="game-stats">
+                        <div class="stat-box">
+                            <span class="stat-value" id="wordScore">0</span>
+                            <span class="stat-label">Score</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="wordsLeft">5</span>
+                            <span class="stat-label">Words</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="hintsLeft">3</span>
+                            <span class="stat-label">Hints</span>
+                        </div>
+                    </div>
+                    <button class="back-btn" onclick="endGame()">Quit Game</button>
+                </div>
+                
+                <div id="wordGameContent"></div>
+            `;
+            
+            startWordGame();
+        }
+
+        function startWordGame() {
+            currentWordIndex = 0;
+            currentSubject = 'science';
+            usedWords = [];
+            gameData.score = 0;
+            
+            showNextWord();
+        }
+
+        function showNextWord() {
+            const subjects = Object.keys(wordBank);
+            currentSubject = subjects[Math.floor(Math.random() * subjects.length)];
+            const words = wordBank[currentSubject];
+            
+            // Find a word not used recently
+            let wordData;
+            do {
+                wordData = words[Math.floor(Math.random() * words.length)];
+            } while (usedWords.includes(wordData.word) && usedWords.length < words.length);
+            
+            usedWords.push(wordData.word);
+            currentWord = wordData.word;
+            currentHint = wordData.hint;
+            
+            // Scramble the word
+            const scrambled = scrambleWord(currentWord);
+            
+            const content = document.getElementById('wordGameContent');
+            content.innerHTML = `
+                <div class="question-box">
+                    <div>Category: <strong>${currentSubject.toUpperCase()}</strong></div>
+                    <div class="scramble-word">${scrambled}</div>
+                    <input type="text" class="scramble-input" id="wordInput" placeholder="Type the unscrambled word here..." onkeypress="handleWordInput(event)">
+                    <div>
+                        <button class="hint-btn" onclick="showHint()">Show Hint (-5 points)</button>
+                        <button class="play-btn" onclick="checkWord()" style="margin-top: 10px;">Submit Answer</button>
+                    </div>
+                    <div class="hint-text" id="hintText"></div>
+                </div>
+            `;
+            
+            document.getElementById('wordInput').focus();
+            updateWordDisplay();
+        }
+
+        function scrambleWord(word) {
+            const arr = word.split('');
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr.join('').toUpperCase();
+        }
+
+        function handleWordInput(event) {
+            if (event.key === 'Enter') {
+                checkWord();
+            }
+        }
+
+        function checkWord() {
+            const input = document.getElementById('wordInput').value.trim().toUpperCase();
+            if (input === currentWord) {
+                gameData.score += 15;
+                // Show success
+                alert('✅ Correct! +15 points');
+                showNextWord();
+            } else {
+                // Show error
+                alert('❌ Try again!');
+                document.getElementById('wordInput').value = '';
+                document.getElementById('wordInput').focus();
+            }
+            updateWordDisplay();
+        }
+
+        function showHint() {
+            if (gameData.score >= 5) {
+                gameData.score -= 5;
+                document.getElementById('hintText').textContent = `Hint: ${currentHint}`;
+                document.getElementById('hintText').style.display = 'block';
+                updateWordDisplay();
+            } else {
+                alert('Not enough points for hint!');
+            }
+        }
+
+        function updateWordDisplay() {
+            document.getElementById('wordScore').textContent = gameData.score;
+            document.getElementById('wordsLeft').textContent = 5 - usedWords.length;
+        }
+
+        // Memory Game
+        function loadMemoryGame() {
+            gameArea.innerHTML = `
+                <div class="game-header">
+                    <h2>🧩 Quick Match Game</h2>
+                    <div class="game-stats">
+                        <div class="stat-box">
+                            <span class="stat-value" id="memoryScore">0</span>
+                            <span class="stat-label">Score</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="matchesLeft">8</span>
+                            <span class="stat-label">Matches</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="memoryTime">60</span>
+                            <span class="stat-label">Time</span>
+                        </div>
+                    </div>
+                    <button class="back-btn" onclick="endGame()">Quit Game</button>
+                </div>
+                
+                <div class="timer-bar">
+                    <div class="timer-fill" id="memoryTimerFill"></div>
+                </div>
+                
+                <div id="memoryGrid"></div>
+            `;
+            
+            startMemoryGame();
+        }
+
+        function startMemoryGame() {
+            memoryCards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            gameData.score = 0;
+            gameData.timeLeft = 60;
+            
+            // Create card pairs
+            const cards = [];
+            memoryPairs.forEach((pair, index) => {
+                cards.push({ type: 'term', content: pair.term, pairId: index });
+                cards.push({ type: 'definition', content: pair.definition, pairId: index });
+            });
+            
+            // Shuffle cards
+            cards.sort(() => Math.random() - 0.5);
+            memoryCards = cards;
+            
+            // Render grid
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = '';
+            cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card';
+                cardElement.dataset.index = index;
+                cardElement.dataset.pairId = card.pairId;
+                cardElement.dataset.type = card.type;
+                cardElement.innerHTML = '?';
+                cardElement.onclick = () => flipCard(cardElement);
+                grid.appendChild(cardElement);
+            });
+            
+            startTimer();
+            updateMemoryDisplay();
+        }
+
+        function flipCard(cardElement) {
+            if (!gameData.gameActive || flippedCards.length >= 2 || cardElement.classList.contains('flipped')) {
+                return;
+            }
+            
+            cardElement.classList.add('flipped');
+            cardElement.textContent = memoryCards[cardElement.dataset.index].content;
+            flippedCards.push(cardElement);
+            
+            if (flippedCards.length === 2) {
+                checkMemoryMatch();
+            }
+        }
+
+        function checkMemoryMatch() {
+            const [card1, card2] = flippedCards;
+            
+            if (card1.dataset.pairId === card2.dataset.pairId) {
+                // Match found
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                gameData.score += 20;
+                matchedPairs++;
+                
+                if (matchedPairs === memoryPairs.length) {
+                    // Game won
+                    setTimeout(() => {
+                        endGame(true);
+                    }, 1000);
+                }
+                
+                flippedCards = [];
+            } else {
+                // No match
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    card1.textContent = '?';
+                    card2.textContent = '?';
+                    flippedCards = [];
+                }, 1000);
+            }
+            
+            updateMemoryDisplay();
+        }
+
+        function updateMemoryDisplay() {
+            document.getElementById('memoryScore').textContent = gameData.score;
+            document.getElementById('matchesLeft').textContent = memoryPairs.length - matchedPairs;
+            document.getElementById('memoryTime').textContent = gameData.timeLeft;
+            document.getElementById('memoryTimerFill').style.width = `${(gameData.timeLeft / 60) * 100}%`;
+        }
+
+        // Timer Functions
+        function startTimer() {
+            if (gameData.timer) clearInterval(gameData.timer);
+            
+            gameData.timer = setInterval(() => {
+                gameData.timeLeft--;
+                
+                // Update display based on current game
+                if (gameData.currentGame === 'math') {
+                    updateMathDisplay();
+                } else if (gameData.currentGame === 'memory') {
+                    updateMemoryDisplay();
+                }
+                
+                if (gameData.timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        // End Game
+        function endGame(isWin = false) {
+            gameData.gameActive = false;
+            clearInterval(gameData.timer);
+            
+            gameArea.innerHTML = `
+                <div class="game-result">
+                    <div class="result-icon">${isWin ? '🎉' : '🏁'}</div>
+                    <h2>Game Over!</h2>
+                    <div class="result-score">Final Score: ${gameData.score}</div>
+                    <p>${isWin ? 'Congratulations! You matched all pairs!' : 'Time\'s up! Try again to beat your score.'}</p>
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+                        <button class="play-btn" onclick="loadGame(gameData.currentGame)">Play Again</button>
+                        <button class="back-btn" onclick="returnToMenu()">Main Menu</button>
+                    </div>
+                </div>
+            `;
+            
+            // Save score to localStorage
+            saveScore(gameData.score);
+        }
+
+        function returnToMenu() {
+            gameArea.style.display = 'none';
+            gamesGrid.style.display = 'grid';
+        }
+
+        function saveScore(score) {
+            const scores = JSON.parse(localStorage.getItem('gameScores') || '[]');
+            scores.push({
+                game: gameData.currentGame,
+                score: score,
+                date: new Date().toLocaleDateString(),
+                player: localStorage.getItem('playerName') || 'Anonymous'
+            });
+            
+            // Keep only top 10 scores
+            scores.sort((a, b) => b.score - a.score);
+            if (scores.length > 10) scores.length = 10;
+            
+            localStorage.setItem('gameScores', JSON.stringify(scores));
+            loadLeaderboard();
+        }
+
+        function loadLeaderboard() {
+            const scores = JSON.parse(localStorage.getItem('gameScores') || '[]');
+            leaderboardBody.innerHTML = '';
+            
+            scores.forEach((score, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${index + 1}</td>
+                    <td>${score.player}</td>
+                    <td>${score.game.charAt(0).toUpperCase() + score.game.slice(1)}</td>
+                    <td><strong>${score.score}</strong></td>
+                    <td>${score.date}</td>
+                `;
+                leaderboardBody.appendChild(row);
+            });
+        }
+
+        // Initialize
+        window.onload = function() {
+            loadLeaderboard();
+            
+            // Set player name if not set
+            if (!localStorage.getItem('playerName')) {
+                const name = prompt('Enter your name for the leaderboard:') || 'Anonymous';
+                localStorage.setItem('playerName', name);
+            }
+        };
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
+            }
+        });
+    </script>
+
+    <script>// Header shrink on scroll for mobile
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const shrinkThreshold = 50; // Pixels to scroll before shrinking
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (window.innerWidth <= 768) { // Mobile only
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+        
+        // Optional: Hide header on scroll down, show on scroll up
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up
+            header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollTop = scrollTop;
+    } else {
+        // Desktop behavior (keep your existing desktop shrink logic)
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+    }
+});
+
+// Optional: Add parallax-like effect for mobile
+window.addEventListener('scroll', function() {
+    if (window.innerWidth <= 768) {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.3; // Adjust this value for intensity
+        
+        // Add subtle background color change on scroll
+        if (header && scrolled > 20) {
+            const opacity = Math.min(scrolled / 200, 0.95);
+            header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+            header.style.backdropFilter = 'blur(10px)';
+        } else if (header) {
+            header.style.backgroundColor = 'white';
+            header.style.backdropFilter = 'none';
+        }
+    }
+});</script>
+</body>
+</html>

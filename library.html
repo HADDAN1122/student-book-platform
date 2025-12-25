@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Library - Student Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Student Platform</h1>
+        <nav>
+            
+            <a href="admin.html">Upload</a>
+            <a href="search.html">Search</a>
+            <a href="index.html">Home</a>
+           <a href="tutors.html">Tutors</a>
+            <a href="login.html" class="login-circle">Login</a>
+        </nav>
+        <hr>
+    </header>
+
+    <!-- LIBRARY HERO -->
+    <section class="library-hero">
+        <div class="library-hero-content">
+            <h1><i class="fas fa-book-open"></i> Digital Library</h1>
+            <p class="hero-subtitle">Browse, read, and download study materials shared by students</p>
+            
+            <!-- Quick Stats -->
+            <div class="library-stats">
+                <div class="lib-stat">
+                    <div class="stat-number" id="totalBooks">0</div>
+                    <div class="stat-label">Books Available</div>
+                </div>
+                <div class="lib-stat">
+                    <div class="stat-number" id="totalPDFs">0</div>
+                    <div class="stat-label">PDF Documents</div>
+                </div>
+                <div class="lib-stat">
+                    <div class="stat-number" id="totalDownloads">0</div>
+                    <div class="stat-label">Total Downloads</div>
+                </div>
+                <div class="lib-stat">
+                    <div class="stat-number">Free</div>
+                    <div class="stat-label">All Resources</div>
+                </div>
+            </div>
+            
+            <!-- Upload CTA -->
+            <div class="upload-cta">
+                <a href="admin.html" class="upload-btn">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload Your Materials
+                </a>
+                <p class="cta-note">Share your notes, books, or study guides with fellow students</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEARCH AND FILTER -->
+    <section class="library-filters">
+        <div class="search-container">
+            <div class="library-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="librarySearch" placeholder="Search books, notes, or subjects...">
+                <button onclick="searchLibrary()">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+
+        <div class="category-filters">
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterByCategory('all')">
+                    <i class="fas fa-th-large"></i> All
+                </button>
+                <button class="filter-tab" onclick="filterByCategory('textbooks')">
+                    <i class="fas fa-book"></i> Textbooks
+                </button>
+                <button class="filter-tab" onclick="filterByCategory('notes')">
+                    <i class="fas fa-sticky-note"></i> Notes
+                </button>
+                <button class="filter-tab" onclick="filterByCategory('past-papers')">
+                    <i class="fas fa-file-alt"></i> Past Papers
+                </button>
+                <button class="filter-tab" onclick="filterByCategory('guides')">
+                    <i class="fas fa-graduation-cap"></i> Study Guides
+                </button>
+                <button class="filter-tab" onclick="filterByCategory('presentations')">
+                    <i class="fas fa-presentation"></i> Presentations
+                </button>
+            </div>
+
+            <div class="sort-options">
+                <label>Sort by:</label>
+                <select id="sortLibrary" onchange="sortLibrary()">
+                    <option value="newest">Newest First</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="downloads">Most Downloads</option>
+                    <option value="likes">Most Likes</option>
+                    <option value="name">Name A-Z</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOKS GRID SECTION -->
+    <section class="library-grid-section">
+        <div class="section-header">
+            <h2>Available Resources</h2>
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="setViewMode('grid')">
+                    <i class="fas fa-th-large"></i> Grid
+                </button>
+                <button class="view-btn" onclick="setViewMode('list')">
+                    <i class="fas fa-list"></i> List
+                </button>
+            </div>
+        </div>
+
+        <!-- Books will load here -->
+        <div class="books-container" id="booksContainer">
+            <div class="loading-books">
+                <div class="loader"></div>
+                <p>Loading library resources...</p>
+            </div>
+        </div>
+
+        <!-- No Results -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-book"></i>
+            <h3>No resources found</h3>
+            <p>Try different search terms or <a href="admin.html">upload your own materials</a></p>
+        </div>
+    </section>
+
+    <!-- BOOK PREVIEW MODAL -->
+    <div class="book-modal" id="bookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Book Title</h3>
+                <button class="close-modal" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="book-preview">
+                    <div class="preview-cover" id="modalCover">
+                        <!-- PDF preview or image will load here -->
+                    </div>
+                    <div class="preview-info">
+                        <div class="book-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-user"></i>
+                                <span id="modalAuthor">Author</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span id="modalDate">Date</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-download"></i>
+                                <span id="modalDownloads">0 downloads</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-tag"></i>
+                                <span id="modalCategory">Category</span>
+                            </div>
+                        </div>
+                        
+                        <div class="book-description">
+                            <h4>Description</h4>
+                            <p id="modalDescription">No description available.</p>
+                        </div>
+                        
+                        <div class="book-stats">
+                            <div class="stat">
+                                <button class="like-btn" onclick="likeBook()">
+                                    <i class="far fa-thumbs-up"></i>
+                                    <span id="modalLikes">0</span>
+                                </button>
+                            </div>
+                            <div class="stat">
+                                <button class="dislike-btn" onclick="dislikeBook()">
+                                    <i class="far fa-thumbs-down"></i>
+                                    <span id="modalDislikes">0</span>
+                                </button>
+                            </div>
+                            <div class="stat">
+                                <button class="share-btn" onclick="shareBook()">
+                                    <i class="fas fa-share-alt"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="download-btn" onclick="downloadBook()">
+                    <i class="fas fa-download"></i> Download Now
+                </button>
+                <button class="read-btn" onclick="readOnline()">
+                    <i class="fas fa-book-open"></i> Read Online
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECENTLY ADDED SECTION -->
+    <section class="recently-added">
+        <h2><i class="fas fa-history"></i> Recently Added</h2>
+        <div class="recent-books-slider" id="recentBooksSlider">
+            <!-- Recent books will load here -->
+            <div class="slider-placeholder">
+                <p>Loading recent additions...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOP DOWNLOADS -->
+    <section class="top-downloads">
+        <h2><i class="fas fa-trophy"></i> Most Popular</h2>
+        <div class="top-books-grid" id="topBooksGrid">
+            <!-- Top books will load here -->
+        </div>
+    </section>
+
+    <!-- SIMPLE FOOTER -->
+    <footer class="simple-footer">
+        <div class="footer-hover-sections">
+            <div class="hover-section contact-hover">
+                <h4>Contact</h4>
+                <p>bannu (kpk), Pakistan</p>
+                <p>+92 3315072123</p>
+                <p>hassanjalilk@gmail.com</p>
+            </div>
+            
+            <div class="hover-section about-hover">
+                <h4>ℹ About</h4>
+                <p>Student Book Platform - Connecting students across Pakistan</p>
+            </div>
+            
+            <div class="hover-section legal-hover">
+                <h4>Legal</h4>
+                <p><a href="#">Terms</a> • <a href="#">Privacy</a> • <a href="#">Cookies</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-main">
+            <div class="message-area">
+                <input type="text" class="message-input" placeholder="WhatsApp me..." id="whatsappMessage">
+                <button class="send-btn" onclick="sendToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+            </div>
+            
+            <div class="footer-right">
+                <div class="copyright">
+                    © 2024 Student Book Platform
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="firebase.js"></script>
+
+    <!-- LIBRARY SCRIPT -->
+    <script>
+        let allBooks = [];
+        let currentBookId = null;
+        let viewMode = 'grid';
+
+        // Load library books
+        function loadLibraryBooks() {
+            const booksContainer = document.getElementById('booksContainer');
+            booksContainer.innerHTML = `
+                <div class="loading-books">
+                    <div class="loader"></div>
+                    <p>Loading library resources...</p>
+                </div>
+            `;
+
+            db.collection("library")
+                .where("status", "==", "approved")
+                .orderBy("uploadedAt", "desc")
+                .limit(20)
+                .get()
+                .then((querySnapshot) => {
+                    booksContainer.innerHTML = '';
+                    allBooks = [];
+
+                    if (querySnapshot.empty) {
+                        booksContainer.innerHTML = `
+                            <div class="no-results">
+                                <i class="fas fa-book"></i>
+                                <h3>No books in library yet</h3>
+                                <p>Be the first to <a href="admin.html">upload study materials</a></p>
+                            </div>
+                        `;
+                        updateStats(0, 0, 0);
+                        return;
+                    }
+
+                    let totalDownloads = 0;
+                    let pdfCount = 0;
+                    let bookCount = 0;
+
+                    querySnapshot.forEach((doc) => {
+                        const book = doc.data();
+                        const bookId = doc.id;
+                        allBooks.push({ id: bookId, ...book });
+                        
+                        const bookCard = createBookCard(book, bookId);
+                        booksContainer.innerHTML += bookCard;
+
+                        // Update stats
+                        totalDownloads += book.downloads || 0;
+                        if (book.fileType === 'pdf') pdfCount++;
+                        bookCount++;
+                    });
+
+                    updateStats(bookCount, pdfCount, totalDownloads);
+                    loadRecentBooks();
+                    loadTopBooks();
+                    
+                })
+                .catch((error) => {
+                    console.error("Error loading library: ", error);
+                    booksContainer.innerHTML = `
+                        <div class="error-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error loading library</h3>
+                            <p>Please check your connection</p>
+                            <button class="cta-btn" onclick="loadLibraryBooks()">Retry</button>
+                        </div>
+                    `;
+                });
+        }
+
+        // Create book card HTML
+        function createBookCard(book, bookId) {
+            const fileIcon = getFileIcon(book.fileType);
+            const fileSize = formatFileSize(book.fileSize);
+            const uploadDate = formatDate(book.uploadedAt);
+            
+            return `
+                <div class="book-card ${viewMode}" data-book-id="${bookId}" data-category="${book.category || 'other'}">
+                    <div class="book-cover">
+                        <div class="file-icon">
+                            ${fileIcon}
+                        </div>
+                        ${book.coverImage ? `<img src="${book.coverImage}" alt="${book.title}" onerror="this.style.display='none'">` : ''}
+                        <div class="book-badge">
+                            ${book.category || 'Book'}
+                        </div>
+                    </div>
+                    
+                    <div class="book-info">
+                        <h3 class="book-title">${book.title || 'Untitled'}</h3>
+                        <p class="book-author">
+                            <i class="fas fa-user"></i> ${book.author || 'Anonymous'}
+                        </p>
+                        
+                        <div class="book-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-file"></i> ${book.fileType || 'PDF'}
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-weight"></i> ${fileSize}
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-calendar"></i> ${uploadDate}
+                            </span>
+                        </div>
+                        
+                        <div class="book-stats">
+                            <span class="stat">
+                                <i class="fas fa-download"></i> ${book.downloads || 0}
+                            </span>
+                            <span class="stat">
+                                <i class="far fa-thumbs-up"></i> ${book.likes || 0}
+                            </span>
+                            <span class="stat">
+                                <i class="far fa-thumbs-down"></i> ${book.dislikes || 0}
+                            </span>
+                        </div>
+                        
+                        <div class="book-actions">
+                            <button class="action-btn preview-btn" onclick="previewBook('${bookId}')" title="Preview">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn download-btn" onclick="downloadFile('${bookId}', '${book.fileUrl}', '${book.title}')" title="Download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="action-btn share-btn" onclick="shareResource('${bookId}', '${book.title}')" title="Share">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <button class="action-btn like-btn" onclick="likeResource('${bookId}')" title="Like">
+                                <i class="far fa-thumbs-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Get file icon based on type
+        function getFileIcon(fileType) {
+            switch(fileType) {
+                case 'pdf': return '<i class="fas fa-file-pdf"></i>';
+                case 'doc': return '<i class="fas fa-file-word"></i>';
+                case 'ppt': return '<i class="fas fa-file-powerpoint"></i>';
+                case 'image': return '<i class="fas fa-file-image"></i>';
+                default: return '<i class="fas fa-file"></i>';
+            }
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (!bytes) return 'Unknown';
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        // Format date
+        function formatDate(timestamp) {
+            if (!timestamp) return 'Recently';
+            const date = timestamp.toDate();
+            return date.toLocaleDateString();
+        }
+
+        // Update stats
+        function updateStats(totalBooks, totalPDFs, totalDownloads) {
+            document.getElementById('totalBooks').textContent = totalBooks;
+            document.getElementById('totalPDFs').textContent = totalPDFs;
+            document.getElementById('totalDownloads').textContent = totalDownloads;
+        }
+
+        // Preview book
+        function previewBook(bookId) {
+            const book = allBooks.find(b => b.id === bookId);
+            if (!book) return;
+
+            currentBookId = bookId;
+            
+            // Update modal content
+            document.getElementById('modalTitle').textContent = book.title || 'Untitled';
+            document.getElementById('modalAuthor').textContent = book.author || 'Anonymous';
+            document.getElementById('modalDate').textContent = formatDate(book.uploadedAt);
+            document.getElementById('modalDownloads').textContent = (book.downloads || 0) + ' downloads';
+            document.getElementById('modalCategory').textContent = book.category || 'General';
+            document.getElementById('modalDescription').textContent = book.description || 'No description available.';
+            document.getElementById('modalLikes').textContent = book.likes || 0;
+            document.getElementById('modalDislikes').textContent = book.dislikes || 0;
+            
+            // Set cover image
+            const cover = document.getElementById('modalCover');
+            if (book.coverImage) {
+                cover.innerHTML = `<img src="${book.coverImage}" alt="${book.title}">`;
+            } else if (book.fileType === 'pdf') {
+                cover.innerHTML = '<i class="fas fa-file-pdf"></i><p>PDF Document</p>';
+            } else {
+                cover.innerHTML = '<i class="fas fa-book"></i><p>Book Preview</p>';
+            }
+            
+            // Show modal
+            document.getElementById('bookModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('bookModal').style.display = 'none';
+        }
+
+        // Download file
+        function downloadFile(bookId, fileUrl, fileName) {
+            // Update download count
+            db.collection("library").doc(bookId).update({
+                downloads: firebase.firestore.FieldValue.increment(1),
+                lastDownloaded: new Date()
+            });
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = fileName || 'download';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success message
+            alert(`Downloading: ${fileName}`);
+        }
+
+        // Share resource
+        function shareResource(bookId, title) {
+            const shareUrl = `${window.location.origin}/library.html?book=${bookId}`;
+            const shareText = `Check out "${title}" on Student Book Platform: ${shareUrl}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: shareText,
+                    url: shareUrl
+                });
+            } else {
+                navigator.clipboard.writeText(shareText);
+                alert('Link copied to clipboard!');
+            }
+        }
+
+        // Like resource
+        function likeResource(bookId) {
+            db.collection("library").doc(bookId).update({
+                likes: firebase.firestore.FieldValue.increment(1)
+            }).then(() => {
+                // Update local data and UI
+                const book = allBooks.find(b => b.id === bookId);
+                if (book) {
+                    book.likes = (book.likes || 0) + 1;
+                    loadLibraryBooks(); // Refresh to show updated counts
+                }
+            });
+        }
+
+        // Search library
+        function searchLibrary() {
+            const searchTerm = document.getElementById('librarySearch').value.toLowerCase();
+            const books = document.querySelectorAll('.book-card');
+            let visibleCount = 0;
+            
+            books.forEach(book => {
+                const title = book.querySelector('.book-title').textContent.toLowerCase();
+                const author = book.querySelector('.book-author').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || author.includes(searchTerm)) {
+                    book.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    book.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('noResults').style.display = 
+                visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const books = document.querySelectorAll('.book-card');
+            
+            books.forEach(book => {
+                if (category === 'all') {
+                    book.style.display = 'block';
+                } else {
+                    const bookCategory = book.getAttribute('data-category');
+                    if (bookCategory.includes(category)) {
+                        book.style.display = 'block';
+                    } else {
+                        book.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Set view mode
+        function setViewMode(mode) {
+            viewMode = mode;
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadLibraryBooks(); // Re-render with new view mode
+        }
+
+        // Load recent books for slider
+        function loadRecentBooks() {
+            const recentBooks = allBooks.slice(0, 5);
+            const slider = document.getElementById('recentBooksSlider');
+            
+            if (recentBooks.length === 0) {
+                slider.innerHTML = '<p>No recent additions yet.</p>';
+                return;
+            }
+            
+            slider.innerHTML = recentBooks.map(book => `
+                <div class="recent-book">
+                    <div class="recent-cover">
+                        ${book.coverImage ? `<img src="${book.coverImage}" alt="${book.title}">` : 
+                          `<i class="fas fa-book"></i>`}
+                    </div>
+                    <div class="recent-info">
+                        <h4>${book.title}</h4>
+                        <p>${book.author}</p>
+                        <button onclick="previewBook('${book.id}')">View</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load top books
+        function loadTopBooks() {
+            const topBooks = [...allBooks]
+                .sort((a, b) => (b.downloads || 0) - (a.downloads || 0))
+                .slice(0, 4);
+            
+            const grid = document.getElementById('topBooksGrid');
+            
+            if (topBooks.length === 0) {
+                grid.innerHTML = '<p>No popular books yet.</p>';
+                return;
+            }
+            
+            grid.innerHTML = topBooks.map(book => `
+                <div class="top-book">
+                    <div class="top-rank">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="top-cover">
+                        ${book.coverImage ? `<img src="${book.coverImage}" alt="${book.title}">` : 
+                          `<i class="fas fa-book"></i>`}
+                    </div>
+                    <div class="top-info">
+                        <h4>${book.title}</h4>
+                        <p><i class="fas fa-download"></i> ${book.downloads || 0} downloads</p>
+                        <button onclick="previewBook('${book.id}')">Download</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLibraryBooks();
+            
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                const modal = document.getElementById('bookModal');
+                if (event.target == modal) {
+                    closeModal();
+                }
+            };
+        });
+    </script>
+
+    <!-- LIBRARY CSS -->
+    <style>
+        /* ===== LIBRARY PAGE STYLES ===== */
+        
+        /* Hero Section */
+        .library-hero {
+            background: linear-gradient(135deg, #6c3bff 0%, #8a56ff 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .library-hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .library-hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .library-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .lib-stat {
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .lib-stat .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .lib-stat .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .upload-cta {
+            margin-top: 30px;
+        }
+
+        .upload-btn {
+            background: white;
+            color: #8a56ff;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .upload-btn:hover {
+            background: #f5f5f5;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .cta-note {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Filters Section */
+        .library-filters {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+        }
+
+        .library-search {
+            display: flex;
+            background: white;
+            border: 2px solid #8a56ff;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(138, 86, 255, 0.1);
+            align-items: center;
+        }
+
+        .library-search i {
+            color: #888;
+            font-size: 1.2rem;
+            margin-left: 20px;
+        }
+
+        .library-search input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .library-search button {
+            background: #8a56ff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .library-search button:hover {
+            background: #7a46ef;
+        }
+
+        .category-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-tab {
+            background: #f5f5f5;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s;
+        }
+
+        .filter-tab:hover {
+            background: #e5e5e5;
+        }
+
+        .filter-tab.active {
+            background: #8a56ff;
+            color: white;
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-options label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .sort-options select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Books Grid Section */
+        .library-grid-section {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+            background: #f5f5f5;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .view-btn {
+            background: none;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .view-btn.active {
+            background: white;
+            color: #8a56ff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Books Container */
+        .books-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* Book Card Styles */
+        .book-card.grid {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .book-card.list {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(138, 86, 255, 0.15);
+            border-color: #8a56ff;
+        }
+
+        .book-cover {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, #f5f7ff 0%, #f0f5ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-card.list .book-cover {
+            width: 150px;
+            height: 200px;
+            flex-shrink: 0;
+        }
+
+        .file-icon {
+            font-size: 4rem;
+            color: #8a56ff;
+            opacity: 0.7;
+        }
+
+        .book-cover img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #8a56ff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-card.list .book-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .book-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .meta-item {
+            background: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .book-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .book-stats .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            background: #f5f5f5;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: #e5e5e5;
+            color: #8a56ff;
+        }
+
+        .preview-btn:hover { background: #e3f2fd; color: #1976d2; }
+        .download-btn:hover { background: #e8f5e9; color: #4caf50; }
+        .share-btn:hover { background: #f3e5f5; color: #7b1fa2; }
+        .like-btn:hover { background: #fff3e0; color: #ff9800; }
+
+        /* Book Modal */
+        .book-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            margin: 50px auto;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 15px;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: #8a56ff;
+            color: white;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .book-preview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .book-preview {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .preview-cover {
+            height: 300px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .preview-cover i {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .preview-cover img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .book-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555;
+        }
+
+        .book-description h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .book-description p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .book-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .book-stats .stat button {
+            background: #f5f5f5;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .like-btn:hover { background: #e8f5e9; color: #4caf50; }
+        .dislike-btn:hover { background: #ffebee; color: #f44336; }
+        .share-btn:hover { background: #e3f2fd; color: #1976d2; }
+
+        .modal-footer {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .download-btn, .read-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .download-btn {
+            background: #8a56ff;
+            color: white;
+        }
+
+        .download-btn:hover {
+            background: #7a46ef;
+            transform: translateY(-2px);
+        }
+
+        .read-btn {
+            background: #25D366;
+            color: white;
+        }
+
+        .read-btn:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+        }
+
+        /* Recently Added */
+        .recently-added, .top-downloads {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .recently-added h2, .top-downloads h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recent-books-slider {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scrollbar-width: thin;
+        }
+
+        .recent-book {
+            flex: 0 0 auto;
+            width: 200px;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .recent-book:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(138, 86, 255, 0.15);
+        }
+
+        .recent-cover {
+            height: 120px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .recent-cover i {
+            font-size: 3rem;
+            color: #8a56ff;
+        }
+
+        .recent-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .recent-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .recent-info button {
+            background: #8a56ff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        /* Top Downloads */
+        .top-books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .top-book {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .top-book:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(138, 86, 255, 0.15);
+        }
+
+        .top-rank {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ffc107;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .top-cover {
+            height: 150px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .top-cover i {
+            font-size: 3rem;
+            color: #8a56ff;
+        }
+
+        .top-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .top-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-info button {
+            background: #8a56ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        /* Loading States */
+        .loading-books, .no-results, .error-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #8a56ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .library-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .library-stats {
+                gap: 25px;
+            }
+            
+            .lib-stat {
+                min-width: 120px;
+            }
+            
+            .books-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .category-filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .book-card.list {
+                flex-direction: column;
+            }
+            
+            .book-card.list .book-cover {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 20px auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .library-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .library-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .books-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .book-meta {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <script>// Header shrink on scroll for mobile
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const shrinkThreshold = 50; // Pixels to scroll before shrinking
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (window.innerWidth <= 768) { // Mobile only
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+        
+        // Optional: Hide header on scroll down, show on scroll up
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up
+            header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollTop = scrollTop;
+    } else {
+        // Desktop behavior (keep your existing desktop shrink logic)
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+    }
+});
+
+// Optional: Add parallax-like effect for mobile
+window.addEventListener('scroll', function() {
+    if (window.innerWidth <= 768) {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.3; // Adjust this value for intensity
+        
+        // Add subtle background color change on scroll
+        if (header && scrolled > 20) {
+            const opacity = Math.min(scrolled / 200, 0.95);
+            header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+            header.style.backdropFilter = 'blur(10px)';
+        } else if (header) {
+            header.style.backgroundColor = 'white';
+            header.style.backdropFilter = 'none';
+        }
+    }
+});</script>
+</body>
+</html>

@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Tutors - Student Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Student Platform</h1>
+        <nav>
+            
+            <a href="search.html">Search</a>
+            <a href="index.html">Home</a>
+            <a href="teacher-register.html" class="highlight-link">Become a Tutor</a>
+            <a href="login.html" class="login-circle">Login</a>
+        </nav>
+        <hr>
+    </header>
+
+    <!-- TUTORS HERO SECTION -->
+    <section class="tutors-hero">
+        <div class="tutors-hero-content">
+            <h1><i class="fas fa-chalkboard-teacher"></i> Find Expert Tutors</h1>
+            <p class="hero-subtitle">Connect with qualified teachers for one-on-one or group tuition sessions</p>
+            
+            <!-- Quick Stats -->
+            <div class="tutors-stats">
+                <div class="tutor-stat">
+                    <div class="stat-number" id="totalTutors">0</div>
+                    <div class="stat-label">Verified Tutors</div>
+                </div>
+                <div class="tutor-stat">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Subjects</div>
+                </div>
+                <div class="tutor-stat">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Available</div>
+                </div>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="hero-actions">
+                <a href="teacher-register.html" class="cta-btn primary">
+                    <i class="fas fa-user-plus"></i> Register as Tutor
+                </a>
+                <a href="#tutorsGrid" class="cta-btn secondary">
+                    <i class="fas fa-search"></i> Browse Tutors
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEARCH AND FILTERS -->
+    <section class="tutors-filters">
+        <div class="search-section">
+            <div class="tutor-search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="tutorSearch" placeholder="Search tutors by subject, name, or qualification...">
+                <button onclick="searchTutors()">Search</button>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <h3><i class="fas fa-filter"></i> Filter Tutors</h3>
+            
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label><i class="fas fa-book"></i> Subject</label>
+                    <select id="subjectFilter" onchange="filterTutors()">
+                        <option value="all">All Subjects</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                        <option value="English">English</option>
+                        <option value="Computer Science">Computer Science</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-graduation-cap"></i> Class Level</label>
+                    <select id="classFilter" onchange="filterTutors()">
+                        <option value="all">All Classes</option>
+                        <option value="9">Class 9</option>
+                        <option value="10">Class 10</option>
+                        <option value="11">Class 11</option>
+                        <option value="12">Class 12</option>
+                        <option value="o-level">O-Level</option>
+                        <option value="a-level">A-Level</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-money-bill-wave"></i> Price Range</label>
+                    <select id="priceFilter" onchange="filterTutors()">
+                        <option value="all">Any Price</option>
+                        <option value="0-500">Under ₨500/hr</option>
+                        <option value="500-1000">₨500-1000/hr</option>
+                        <option value="1000-2000">₨1000-2000/hr</option>
+                        <option value="2000+">Above ₨2000/hr</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-map-marker-alt"></i> City</label>
+                    <select id="cityFilter" onchange="filterTutors()">
+                        <option value="all">All Cities</option>
+                        <option value="Islamabad">Islamabad</option>
+                        <option value="Rawalpindi">Rawalpindi</option>
+                        <option value="Lahore">Lahore</option>
+                        <option value="Karachi">Karachi</option>
+                        <option value="Peshawar">Peshawar</option>
+                        <option value="Bannu">Bannu</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label><i class="fas fa-laptop-house"></i> Teaching Mode</label>
+                    <select id="modeFilter" onchange="filterTutors()">
+                        <option value="all">All Modes</option>
+                        <option value="online">Online</option>
+                        <option value="home-tuition">Home Tuition</option>
+                        <option value="coaching-center">Coaching Center</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="clear-filters" onclick="clearFilters()">
+                <i class="fas fa-times"></i> Clear All Filters
+            </button>
+        </div>
+    </section>
+
+    <!-- TUTORS GRID -->
+    <section class="tutors-grid-section" id="tutorsGrid">
+        <div class="section-header">
+            <h2>Available Tutors</h2>
+            <div class="sort-options">
+                <label>Sort by:</label>
+                <select id="sortTutors" onchange="sortTutors()">
+                    <option value="newest">Newest First</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="experience">Experience</option>
+                    <option value="rating">Rating</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Tutors will load here -->
+        <div class="tutors-container" id="tutorsContainer">
+            <div class="loading-tutors">
+                <div class="loader"></div>
+                <p>Loading tutors...</p>
+            </div>
+        </div>
+
+        <!-- No Results -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-user-graduate"></i>
+            <h3>No tutors found</h3>
+            <p>Try changing your search criteria or <a href="teacher-register.html">register as a tutor</a></p>
+        </div>
+
+        <!-- Load More -->
+        <div class="load-more-container">
+            <button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreTutors()" style="display: none;">
+                <i class="fas fa-sync"></i> Load More Tutors
+            </button>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="tutors-process">
+        <h2>How to Find a Tutor</h2>
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-icon">1</div>
+                <h3>Search & Filter</h3>
+                <p>Find tutors by subject, location, price, and teaching mode</p>
+            </div>
+            <div class="process-step">
+                <div class="step-icon">2</div>
+                <h3>View Profiles</h3>
+                <p>Check qualifications, experience, ratings, and reviews</p>
+            </div>
+            <div class="process-step">
+                <div class="step-icon">3</div>
+                <h3>Contact Tutor</h3>
+                <p>Message via WhatsApp to discuss schedule and details</p>
+            </div>
+            <div class="process-step">
+                <div class="step-icon">4</div>
+                <h3>Start Learning</h3>
+                <p>Begin your tuition sessions and track progress</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFITS SECTION -->
+    <section class="tutors-benefits">
+        <h2>Why Choose Our Tutors?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>Verified Profiles</h3>
+                <p>All tutors are verified with proper qualifications</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-star"></i>
+                <h3>Student Ratings</h3>
+                <p>Real reviews and ratings from previous students</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-lock"></i>
+                <h3>Secure Contact</h3>
+                <p>Direct WhatsApp contact with tutors</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>Flexible Pricing</h3>
+                <p>Competitive hourly rates for all budgets</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SIMPLE FOOTER -->
+    <footer class="simple-footer">
+        <div class="footer-hover-sections">
+            <div class="hover-section contact-hover">
+                <h4>Contact</h4>
+                <p>bannu (kpk), Pakistan</p>
+                <p>+92 3315072123</p>
+                <p>hassanjalilk@gmail.com</p>
+            </div>
+            
+            <div class="hover-section about-hover">
+                <h4>ℹ About</h4>
+                <p>Student Book Platform - Connecting students across Pakistan</p>
+            </div>
+            
+            <div class="hover-section legal-hover">
+                <h4>Legal</h4>
+                <p><a href="#">Terms</a> • <a href="#">Privacy</a> • <a href="#">Cookies</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-main">
+            <div class="message-area">
+                <input type="text" class="message-input" placeholder="WhatsApp me..." id="whatsappMessage">
+                <button class="send-btn" onclick="sendToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+            </div>
+            
+            <div class="footer-right">
+                <div class="copyright">
+                    © 2024 Student Book Platform
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="firebase.js"></script>
+
+    <!-- TUTORS LISTING SCRIPT -->
+    <script>
+        let allTutors = [];
+        let lastVisible = null;
+        let loading = false;
+
+        // Load tutors from Firebase
+        function loadTutors(loadMore = false) {
+            if (loading) return;
+            loading = true;
+
+            const tutorsContainer = document.getElementById('tutorsContainer');
+            if (!loadMore) {
+                tutorsContainer.innerHTML = `
+                    <div class="loading-tutors">
+                        <div class="loader"></div>
+                        <p>Loading tutors...</p>
+                    </div>
+                `;
+            }
+
+            let query = db.collection("teachers")
+                .where("status", "==", "approved") // Only show approved tutors
+                .orderBy("createdAt", "desc");
+
+            if (loadMore && lastVisible) {
+                query = query.startAfter(lastVisible);
+            }
+
+            query.limit(12).get()
+                .then((querySnapshot) => {
+                    if (!loadMore) {
+                        tutorsContainer.innerHTML = '';
+                        allTutors = [];
+                    }
+
+                    if (querySnapshot.empty) {
+                        if (!loadMore) {
+                            tutorsContainer.innerHTML = `
+                                <div class="no-results">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <h3>No tutors available yet</h3>
+                                    <p>Be the first to <a href="teacher-register.html">register as a tutor</a></p>
+                                </div>
+                            `;
+                        }
+                        document.getElementById('loadMoreBtn').style.display = 'none';
+                        document.getElementById('noResults').style.display = 'block';
+                        loading = false;
+                        return;
+                    }
+
+                    querySnapshot.forEach((doc) => {
+                        const tutor = doc.data();
+                        const tutorId = doc.id;
+                        allTutors.push({ id: tutorId, ...tutor });
+                        
+                        const tutorCard = createTutorCard(tutor, tutorId);
+                        tutorsContainer.innerHTML += tutorCard;
+                    });
+
+                    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+                    document.getElementById('loadMoreBtn').style.display = 
+                        querySnapshot.size === 12 ? 'block' : 'none';
+                    document.getElementById('totalTutors').textContent = allTutors.length;
+                    document.getElementById('noResults').style.display = 'none';
+                    
+                    loading = false;
+                })
+                .catch((error) => {
+                    console.error("Error loading tutors: ", error);
+                    tutorsContainer.innerHTML = `
+                        <div class="error-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error loading tutors</h3>
+                            <p>Please check your connection</p>
+                            <button class="cta-btn primary" onclick="loadTutors()">Retry</button>
+                        </div>
+                    `;
+                    loading = false;
+                });
+        }
+
+        // Create tutor card HTML
+        function createTutorCard(tutor, tutorId) {
+            const hourlyRate = tutor.hourlyRate ? `₨${tutor.hourlyRate}/hr` : 'Contact for price';
+            const experience = tutor.experience || 'Not specified';
+            const subjects = Array.isArray(tutor.subjects) ? tutor.subjects.slice(0, 3).join(', ') : tutor.subjects;
+            
+            // Rating stars
+            const rating = tutor.rating || 0;
+            const ratingStars = '★'.repeat(Math.floor(rating)) + '☆'.repeat(5 - Math.floor(rating));
+            
+            // Profile photo or default
+            const profilePhoto = tutor.profilePhoto || '';
+            
+            return `
+                <div class="tutor-card" data-tutor-id="${tutorId}" 
+                     data-subjects="${tutor.subjects ? tutor.subjects.toString().toLowerCase() : ''}"
+                     data-classes="${tutor.classes ? tutor.classes.toString().toLowerCase() : ''}"
+                     data-city="${tutor.city ? tutor.city.toLowerCase() : ''}"
+                     data-price="${tutor.hourlyRate || 0}"
+                     data-mode="${tutor.teachingModes ? tutor.teachingModes.toString().toLowerCase() : ''}">
+                    
+                    <div class="tutor-header">
+                        <div class="tutor-photo">
+                            ${profilePhoto ? 
+                                `<img src="${profilePhoto}" alt="${tutor.fullName}" 
+                                      onerror="this.src=''; this.parentElement.innerHTML='<i class=\"fas fa-user-circle\"></i>'">` :
+                                `<i class="fas fa-user-circle"></i>`
+                            }
+                        </div>
+                        <div class="tutor-basic-info">
+                            <h3 class="tutor-name">${tutor.fullName || 'Tutor'}</h3>
+                            <div class="tutor-rating">
+                                <span class="stars">${ratingStars}</span>
+                                <span class="rating-text">${rating.toFixed(1)}/5.0</span>
+                            </div>
+                            <div class="tutor-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                ${tutor.city || 'Location not specified'}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tutor-details">
+                        <div class="detail-row">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>${tutor.highestDegree || 'Not specified'} - ${tutor.degreeTitle || ''}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-briefcase"></i>
+                            <span>${experience} years experience</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-book"></i>
+                            <span class="subjects">${subjects}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Classes: ${Array.isArray(tutor.classes) ? tutor.classes.join(', ') : tutor.classes || 'All'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-laptop-house"></i>
+                            <span>${Array.isArray(tutor.teachingModes) ? tutor.teachingModes.join(', ') : tutor.teachingModes || 'Various'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="tutor-footer">
+                        <div class="tutor-price">
+                            <i class="fas fa-tag"></i>
+                            <strong>${hourlyRate}</strong>
+                        </div>
+                        <div class="tutor-actions">
+                            <button class="view-profile-btn" onclick="viewTutorProfile('${tutorId}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="contact-tutor-btn" onclick="contactTutor('${tutor.fullName || 'Tutor'}', '${tutor.whatsapp || '923315072123'}', '${tutor.subjects ? tutor.subjects[0] : 'Tuition'}')">
+                                <i class="fab fa-whatsapp"></i> Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Contact tutor via WhatsApp
+        function contactTutor(tutorName, whatsappNumber, subject) {
+            const message = `Hi ${tutorName}! I'm interested in ${subject} tuition from Student Book Platform. Can you tell me about availability and schedule?`;
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // View tutor profile (can be expanded later)
+        function viewTutorProfile(tutorId) {
+            // For now, just show an alert. Can create tutor-profile.html later
+            const tutor = allTutors.find(t => t.id === tutorId);
+            if (tutor) {
+                alert(`Tutor Profile:\n\nName: ${tutor.fullName}\nQualification: ${tutor.degreeTitle}\nExperience: ${tutor.experience} years\nSubjects: ${tutor.subjects}\nRate: ₨${tutor.hourlyRate}/hr\n\nContact via WhatsApp to book sessions.`);
+            }
+        }
+
+        // Search tutors
+        function searchTutors() {
+            const searchTerm = document.getElementById('tutorSearch').value.toLowerCase();
+            const tutors = document.querySelectorAll('.tutor-card');
+            let visibleCount = 0;
+            
+            tutors.forEach(tutor => {
+                const tutorText = tutor.textContent.toLowerCase();
+                
+                if (searchTerm === '' || tutorText.includes(searchTerm)) {
+                    tutor.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    tutor.style.display = 'none';
+                }
+            });
+            
+            // Show no results message
+            document.getElementById('noResults').style.display = 
+                visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // Filter tutors
+        function filterTutors() {
+            const subject = document.getElementById('subjectFilter').value.toLowerCase();
+            const classFilter = document.getElementById('classFilter').value;
+            const priceRange = document.getElementById('priceFilter').value;
+            const city = document.getElementById('cityFilter').value.toLowerCase();
+            const mode = document.getElementById('modeFilter').value.toLowerCase();
+            
+            const tutors = document.querySelectorAll('.tutor-card');
+            let visibleCount = 0;
+            
+            tutors.forEach(tutor => {
+                const tutorSubjects = tutor.getAttribute('data-subjects');
+                const tutorClasses = tutor.getAttribute('data-classes');
+                const tutorCity = tutor.getAttribute('data-city');
+                const tutorPrice = parseInt(tutor.getAttribute('data-price')) || 0;
+                const tutorMode = tutor.getAttribute('data-mode');
+                
+                let show = true;
+                
+                // Subject filter
+                if (subject !== 'all' && (!tutorSubjects || !tutorSubjects.includes(subject))) {
+                    show = false;
+                }
+                
+                // Class filter
+                if (classFilter !== 'all' && (!tutorClasses || !tutorClasses.includes(classFilter))) {
+                    show = false;
+                }
+                
+                // City filter
+                if (city !== 'all' && (!tutorCity || !tutorCity.includes(city))) {
+                    show = false;
+                }
+                
+                // Teaching mode filter
+                if (mode !== 'all' && (!tutorMode || !tutorMode.includes(mode))) {
+                    show = false;
+                }
+                
+                // Price filter
+                if (priceRange !== 'all') {
+                    if (priceRange === '0-500' && tutorPrice > 500) show = false;
+                    else if (priceRange === '500-1000' && (tutorPrice < 500 || tutorPrice > 1000)) show = false;
+                    else if (priceRange === '1000-2000' && (tutorPrice < 1000 || tutorPrice > 2000)) show = false;
+                    else if (priceRange === '2000+' && tutorPrice < 2000) show = false;
+                }
+                
+                tutor.style.display = show ? 'block' : 'none';
+                if (show) visibleCount++;
+            });
+            
+            document.getElementById('noResults').style.display = 
+                visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('subjectFilter').value = 'all';
+            document.getElementById('classFilter').value = 'all';
+            document.getElementById('priceFilter').value = 'all';
+            document.getElementById('cityFilter').value = 'all';
+            document.getElementById('modeFilter').value = 'all';
+            document.getElementById('tutorSearch').value = '';
+            
+            const tutors = document.querySelectorAll('.tutor-card');
+            tutors.forEach(tutor => tutor.style.display = 'block');
+            document.getElementById('noResults').style.display = 'none';
+        }
+
+        // Sort tutors
+        function sortTutors() {
+            const sortBy = document.getElementById('sortTutors').value;
+            
+            // Create array of tutor elements with their data
+            const tutorElements = Array.from(document.querySelectorAll('.tutor-card'));
+            const tutorsContainer = document.getElementById('tutorsContainer');
+            
+            // Sort based on criteria
+            tutorElements.sort((a, b) => {
+                if (sortBy === 'price-low') {
+                    const priceA = parseInt(a.getAttribute('data-price')) || 0;
+                    const priceB = parseInt(b.getAttribute('data-price')) || 0;
+                    return priceA - priceB;
+                } else if (sortBy === 'price-high') {
+                    const priceA = parseInt(a.getAttribute('data-price')) || 0;
+                    const priceB = parseInt(b.getAttribute('data-price')) || 0;
+                    return priceB - priceA;
+                } else if (sortBy === 'newest') {
+                    // Already sorted by newest from Firebase
+                    return 0;
+                }
+                return 0;
+            });
+            
+            // Reappend sorted elements
+            tutorsContainer.innerHTML = '';
+            tutorElements.forEach(tutor => {
+                tutorsContainer.appendChild(tutor);
+            });
+        }
+
+        // Load more tutors
+        function loadMoreTutors() {
+            loadTutors(true);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTutors();
+            
+            // Refresh every 60 seconds
+            setInterval(() => {
+                loadTutors();
+            }, 60000);
+        });
+    </script>
+
+    <!-- TUTORS CSS -->
+    <style>
+        /* ===== TUTORS PAGE STYLES ===== */
+        
+        /* Highlight link in nav */
+        .highlight-link {
+            color: #8a56ff !important;
+            font-weight: 700 !important;
+            background: rgba(138, 86, 255, 0.1);
+            padding: 5px 15px !important;
+            border-radius: 20px;
+        }
+
+        /* Hero Section */
+        .tutors-hero {
+            background: linear-gradient(135deg, #8a56ff 0%, #6c3bff 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .tutors-hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tutors-hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tutors-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .tutor-stat {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .tutor-stat .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .tutor-stat .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .cta-btn.primary {
+            background: white;
+            color: #8a56ff;
+        }
+
+        .cta-btn.primary:hover {
+            background: #f5f5f5;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .cta-btn.secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Filters Section */
+        .tutors-filters {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .tutor-search-box {
+            display: flex;
+            background: white;
+            border: 2px solid #8a56ff;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(138, 86, 255, 0.1);
+            align-items: center;
+            padding: 0 5px 0 20px;
+        }
+
+        .tutor-search-box i {
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        .tutor-search-box input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+            margin: 0 10px;
+        }
+
+        .tutor-search-box button {
+            background: #8a56ff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-radius: 0 50px 50px 0;
+        }
+
+        .tutor-search-box button:hover {
+            background: #7a46ef;
+        }
+
+        .filters-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .filters-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .clear-filters {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .clear-filters:hover {
+            background: #cc0000;
+        }
+
+        /* Tutors Grid Section */
+        .tutors-grid-section {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-options label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .sort-options select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .tutors-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        /* Tutor Card */
+        .tutor-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .tutor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(138, 86, 255, 0.15);
+            border-color: #8a56ff;
+        }
+
+        .tutor-header {
+            display: flex;
+            padding: 25px 25px 20px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tutor-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .tutor-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tutor-photo i {
+            font-size: 4rem;
+            color: #888;
+        }
+
+        .tutor-basic-info {
+            flex: 1;
+        }
+
+        .tutor-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .tutor-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .tutor-rating .stars {
+            color: #ffc107;
+            font-size: 1.1rem;
+        }
+
+        .tutor-rating .rating-text {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .tutor-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .tutor-details {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 12px;
+            color: #555;
+        }
+
+        .detail-row i {
+            color: #8a56ff;
+            width: 20px;
+            margin-top: 2px;
+        }
+
+        .detail-row .subjects {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .tutor-footer {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tutor-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #8a56ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tutor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-profile-btn, .contact-tutor-btn {
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-profile-btn {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .view-profile-btn:hover {
+            background: #e5e5e5;
+        }
+
+        .contact-tutor-btn {
+            background: #25D366;
+            color: white;
+        }
+
+        .contact-tutor-btn:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+        }
+
+        /* Loading States */
+        .loading-tutors {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #8a56ff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-results, .error-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .no-results i, .error-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #888;
+        }
+
+        /* Process Section */
+        .tutors-process {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .tutors-process h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .process-step {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 30px 20px;
+            transition: all 0.3s;
+        }
+
+        .process-step:hover {
+            border-color: #8a56ff;
+            transform: translateY(-5px);
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            background: #8a56ff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .process-step h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .process-step p {
+            color: #666;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        /* Benefits Section */
+        .tutors-benefits {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .tutors-benefits h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .benefit-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 30px 20px;
+            transition: all 0.3s;
+        }
+
+        .benefit-card:hover {
+            border-color: #8a56ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(138, 86, 255, 0.1);
+        }
+
+        .benefit-card i {
+            font-size: 2.5rem;
+            color: #8a56ff;
+            margin-bottom: 20px;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .benefit-card p {
+            color: #666;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        /* Load More Button */
+        .load-more-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .load-more-btn {
+            background: #8a56ff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        .load-more-btn:hover {
+            background: #7a46ef;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(138, 86, 255, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tutors-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tutors-stats {
+                gap: 30px;
+            }
+            
+            .tutor-stat {
+                min-width: 100px;
+            }
+            
+            .tutors-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .filter-controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tutor-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .tutor-footer {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .tutor-actions {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tutors-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .tutors-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .tutor-search-box {
+                flex-direction: column;
+                border-radius: 12px;
+                padding: 15px;
+            }
+            
+            .tutor-search-box button {
+                border-radius: 8px;
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .process-steps, .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>// Header shrink on scroll for mobile
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const shrinkThreshold = 50; // Pixels to scroll before shrinking
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (window.innerWidth <= 768) { // Mobile only
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+        
+        // Optional: Hide header on scroll down, show on scroll up
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up
+            header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollTop = scrollTop;
+    } else {
+        // Desktop behavior (keep your existing desktop shrink logic)
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+    }
+});
+
+// Optional: Add parallax-like effect for mobile
+window.addEventListener('scroll', function() {
+    if (window.innerWidth <= 768) {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.3; // Adjust this value for intensity
+        
+        // Add subtle background color change on scroll
+        if (header && scrolled > 20) {
+            const opacity = Math.min(scrolled / 200, 0.95);
+            header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+            header.style.backdropFilter = 'blur(10px)';
+        } else if (header) {
+            header.style.backgroundColor = 'white';
+            header.style.backdropFilter = 'none';
+        }
+    }
+});</script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!-- search.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <title>Search Books | Student Platform</title>
+</head>
+<body>
+    <header>
+        <h1>Student Platform</h1>
+        <nav>
+           
+            <a href="search.html" class="active">Search</a>
+            <a href="login.html" class="login-circle">Login</a>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <!-- Search Hero -->
+        <section class="search-hero">
+            <div class="search-hero-content">
+                <h1>Find Books & Materials</h1>
+                <p class="search-subtitle">Search across thousands of books, exchanges, and study materials</p>
+                
+                <!-- Main Search Bar -->
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="mainSearch" placeholder="Search by book title, subject, class, author, ISBN..." 
+                               autocomplete="off" autofocus>
+                        <button id="searchBtn">🔍 Search</button>
+                    </div>
+                    <div class="quick-search-tags">
+                        <span class="tag" data-search="Mathematics 9th">Math 9th</span>
+                        <span class="tag" data-search="Physics 10th">Physics 10th</span>
+                        <span class="tag" data-search="Chemistry">Chemistry</span>
+                        <span class="tag" data-search="English">English</span>
+                        <span class="tag" data-search="Past Papers">Past Papers</span>
+                        <span class="tag" data-search="Punjab Board">Punjab Board</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Filters -->
+        <div class="search-filters">
+            <div class="filter-section">
+                <div class="filter-title">
+                    <h3>📚 Search Filters</h3>
+                    <button id="clearFilters" class="clear-btn">Clear All</button>
+                </div>
+                
+                <div class="filters-grid">
+                    <!-- Category Filter -->
+                    <div class="filter-group">
+                        <label>Category</label>
+                        <select id="filterCategory">
+                            <option value="">All Categories</option>
+                            <option value="books">For Sale</option>
+                            <option value="exchange">Exchange</option>
+                            <option value="materials">Study Materials</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Class Filter -->
+                    <div class="filter-group">
+                        <label>Class/Grade</label>
+                        <select id="filterClass">
+                            <option value="">All Classes</option>
+                            <option value="9th">9th Grade</option>
+                            <option value="10th">10th Grade</option>
+                            <option value="11th">11th Grade</option>
+                            <option value="12th">12th Grade</option>
+                            <option value="bsc">BSc</option>
+                            <option value="msc">MSc</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Board Filter -->
+                    <div class="filter-group">
+                        <label>Education Board</label>
+                        <select id="filterBoard">
+                            <option value="">All Boards</option>
+                            <option value="Punjab Board">Punjab Board</option>
+                            <option value="FBISE">FBISE</option>
+                            <option value="Cambridge">Cambridge</option>
+                            <option value="Aga Khan">Aga Khan Board</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Price Range -->
+                    <div class="filter-group">
+                        <label>Price Range (PKR)</label>
+                        <div class="price-range">
+                            <input type="number" id="minPrice" placeholder="Min" min="0">
+                            <span>to</span>
+                            <input type="number" id="maxPrice" placeholder="Max" min="0">
+                        </div>
+                    </div>
+                    
+                    <!-- Condition Filter -->
+                    <div class="filter-group">
+                        <label>Condition</label>
+                        <select id="filterCondition">
+                            <option value="">Any Condition</option>
+                            <option value="New">New</option>
+                            <option value="Like New">Like New</option>
+                            <option value="Good">Good</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Poor">Poor</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Sort By -->
+                    <div class="filter-group">
+                        <label>Sort By</label>
+                        <select id="sortBy">
+                            <option value="recent">Most Recent</option>
+                            <option value="price_low">Price: Low to High</option>
+                            <option value="price_high">Price: High to Low</option>
+                            <option value="popular">Most Popular</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <section class="search-results">
+            <div class="results-header">
+                <h2 id="resultsTitle">Search Results</h2>
+                <div class="results-stats">
+                    <span id="resultsCount">0</span> items found
+                </div>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingResults" class="loading-results">
+                <div class="loader"></div>
+                <p>Searching books and materials...</p>
+            </div>
+            
+            <!-- Results Container -->
+            <div id="resultsContainer" class="results-container">
+                <!-- Results will be dynamically inserted here -->
+                <div class="no-results">
+                    <div class="no-results-icon">🔍</div>
+                    <h3>No results yet</h3>
+                    <p>Enter a search term or adjust your filters to find books and materials.</p>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div id="pagination" class="pagination" style="display: none;">
+                <button id="prevPage" class="page-btn">← Previous</button>
+                <div class="page-numbers">
+                    <span class="current-page">1</span>
+                    <span>of</span>
+                    <span class="total-pages">1</span>
+                </div>
+                <button id="nextPage" class="page-btn">Next →</button>
+            </div>
+        </section>
+
+        <!-- Recent Searches -->
+        <section class="recent-searches">
+            <h2>Popular Searches</h2>
+            <div class="popular-searches">
+                <a href="#" class="popular-tag" data-search="mathematics textbook">Mathematics</a>
+                <a href="#" class="popular-tag" data-search="physics book">Physics</a>
+                <a href="#" class="popular-tag" data-search="chemistry">Chemistry</a>
+                <a href="#" class="popular-tag" data-search="biology">Biology</a>
+                <a href="#" class="popular-tag" data-search="english grammar">English</a>
+                <a href="#" class="popular-tag" data-search="past papers">Past Papers</a>
+                <a href="#" class="popular-tag" data-search="urdu">Urdu</a>
+                <a href="#" class="popular-tag" data-search="computer science">Computer Science</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="firebase.js"></script>
+    <script src="auth.js"></script>
+    <script src="search.js"></script>
+
+
+    <script>// Header shrink on scroll for mobile
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const shrinkThreshold = 50; // Pixels to scroll before shrinking
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (window.innerWidth <= 768) { // Mobile only
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+        
+        // Optional: Hide header on scroll down, show on scroll up
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up
+            header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollTop = scrollTop;
+    } else {
+        // Desktop behavior (keep your existing desktop shrink logic)
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+    }
+});
+
+// Optional: Add parallax-like effect for mobile
+window.addEventListener('scroll', function() {
+    if (window.innerWidth <= 768) {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.3; // Adjust this value for intensity
+        
+        // Add subtle background color change on scroll
+        if (header && scrolled > 20) {
+            const opacity = Math.min(scrolled / 200, 0.95);
+            header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+            header.style.backdropFilter = 'blur(10px)';
+        } else if (header) {
+            header.style.backgroundColor = 'white';
+            header.style.backdropFilter = 'none';
+        }
+    }
+});</script>
+</body>
+</html>

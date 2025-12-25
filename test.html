@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Complete Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+        button { 
+            padding: 10px 20px; 
+            margin: 5px; 
+            cursor: pointer; 
+        }
+        #results { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            margin-top: 20px; 
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Firebase Complete Diagnostic Test</h1>
+        
+        <div class="test-section">
+            <h2>1. Basic Connection</h2>
+            <button onclick="testBasicConnection()">Test Firebase Load</button>
+            <button onclick="testServices()">Test Services</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. Authentication</h2>
+            <button onclick="testAuthCreate()">Create Test User</button>
+            <button onclick="testAuthLogin()">Login Test User</button>
+            <button onclick="testAuthCurrent()">Check Current User</button>
+            <button onclick="testAuthLogout()">Logout</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. Firestore Database</h2>
+            <button onclick="testFirestoreWrite()">Write Test Data</button>
+            <button onclick="testFirestoreRead()">Read Test Data</button>
+            <button onclick="testCollections()">Create Collections</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. Storage</h2>
+            <button onclick="testStorage()">Test Storage</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>5. Cleanup</h2>
+            <button onclick="cleanupTestData()">Delete Test Data</button>
+            <button onclick="deleteTestUsers()">Delete Test Users</button>
+        </div>
+        
+        <div id="results">Test results will appear here...</div>
+        
+        <h3>Current Status:</h3>
+        <div id="status"></div>
+    </div>
+
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <!-- Your Firebase Config -->
+    <script src="firebase.js"></script>
+
+    <!-- Your Auth Functions -->
+    <script src="auth.js"></script>
+
+    <script>
+        const results = document.getElementById('results');
+        const statusDiv = document.getElementById('status');
+        
+        let testUsers = []; // Track created test users
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? 'red' : 
+                         type === 'success' ? 'green' : 
+                         type === 'warning' ? 'orange' : 'black';
+            
+            results.innerHTML += `<span style="color:${color}">[${timestamp}] ${message}</span>\n`;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        function updateStatus() {
+            const user = auth.currentUser;
+            statusDiv.innerHTML = `
+                <p>Firebase Loaded: ${typeof firebase !== 'undefined' ? '✅' : '❌'}</p>
+                <p>Auth Service: ${typeof auth !== 'undefined' ? '✅' : '❌'}</p>
+                <p>Firestore Service: ${typeof db !== 'undefined' ? '✅' : '❌'}</p>
+                <p>Storage Service: ${typeof storage !== 'undefined' ? '✅' : '❌'}</p>
+                <p>Current User: ${user ? user.email : 'Not logged in'}</p>
+                <p>Test Users Created: ${testUsers.length}</p>
+            `;
+        }
+        
+        // Test 1: Basic Connection
+        async function testBasicConnection() {
+            log("=== Testing Basic Firebase Connection ===");
+            
+            if (typeof firebase === 'undefined') {
+                log("❌ Firebase SDK not loaded!", 'error');
+                return;
+            }
+            log("✅ Firebase SDK loaded", 'success');
+            
+            // Check your firebase.js loaded
+            if (typeof db === 'undefined') {
+                log("❌ Your firebase.js not loaded properly!", 'error');
+                return;
+            }
+            log("✅ Your firebase.js loaded", 'success');
+            
+            updateStatus();
+        }
+        
+        // Test 2: Services
+        async function testServices() {
+            log("=== Testing Firebase Services ===");
+            
+            const services = [
+                { name: 'Authentication', check: () => typeof auth !== 'undefined' },
+                { name: 'Firestore', check: () => typeof db !== 'undefined' },
+                { name: 'Storage', check: () => typeof storage !== 'undefined' },
+                { name: 'App Instance', check: () => typeof firebaseApp !== 'undefined' }
+            ];
+            
+            services.forEach(service => {
+                if (service.check()) {
+                    log(`✅ ${service.name} service loaded`, 'success');
+                } else {
+                    log(`❌ ${service.name} service NOT loaded`, 'error');
+                }
+            });
+            
+            updateStatus();
+        }
+        
+        // Test 3: Create Test User
+        async function testAuthCreate() {
+            log("=== Creating Test User ===");
+            
+            const testEmail = `test${Date.now()}@studentbooks.com`;
+            const testPassword = "test123456";
+            
+            try {
+                log(`Creating user: ${testEmail}...`);
+                const userCredential = await auth.createUserWithEmailAndPassword(testEmail, testPassword);
+                const user = userCredential.user;
+                
+                testUsers.push({ email: testEmail, uid: user.uid });
+                
+                log(`✅ User created successfully! UID: ${user.uid}`, 'success');
+                log(`Email: ${user.email}`, 'success');
+                log(`Email verified: ${user.emailVerified}`, 'info');
+                
+                // Also save to Firestore users collection
+                try {
+                    await db.collection('users').doc(user.uid).set({
+                        email: testEmail,
+                        displayName: 'Test User',
+                        createdAt: new Date(),
+                        testUser: true
+                    });
+                    log("✅ User data saved to Firestore", 'success');
+                } catch (firestoreError) {
+                    log(`⚠️ Could not save to Firestore: ${firestoreError.message}`, 'warning');
+                }
+                
+            } catch (error) {
+                log(`❌ User creation failed: ${error.message}`, 'error');
+                log(`Error code: ${error.code}`, 'error');
+            }
+            
+            updateStatus();
+        }
+        
+        // Test 4: Login Test User
+        async function testAuthLogin() {
+            log("=== Testing Login ===");
+            
+            if (testUsers.length === 0) {
+                log("⚠️ No test users created yet. Create one first.", 'warning');
+                return;
+            }
+            
+            const lastUser = testUsers[testUsers.length - 1];
+            
+            try {
+                log(`Logging in as: ${lastUser.email}...`);
+                await auth.signInWithEmailAndPassword(lastUser.email, "test123456");
+                log("✅ Login successful!", 'success');
+                log(`Current user: ${auth.currentUser.email}`, 'success');
+                
+            } catch (error) {
+                log(`❌ Login failed: ${error.message}`, 'error');
+            }
+            
+            updateStatus();
+        }
+        
+        // Test 5: Check Current User
+        async function testAuthCurrent() {
+            log("=== Checking Current User ===");
+            
+            const user = auth.currentUser;
+            
+            if (user) {
+                log(`✅ User is logged in:`, 'success');
+                log(`  Email: ${user.email}`, 'info');
+                log(`  UID: ${user.uid}`, 'info');
+                log(`  Email verified: ${user.emailVerified}`, 'info');
+                log(`  Last sign-in: ${user.metadata.lastSignInTime}`, 'info');
+            } else {
+                log("ℹ️ No user is currently logged in", 'info');
+            }
+        }
+        
+        // Test 6: Logout
+        async function testAuthLogout() {
+            log("=== Testing Logout ===");
+            
+            try {
+                await auth.signOut();
+                log("✅ Logout successful!", 'success');
+            } catch (error) {
+                log(`❌ Logout failed: ${error.message}`, 'error');
+            }
+            
+            updateStatus();
+        }
+        
+        // Test 7: Firestore Write
+        async function testFirestoreWrite() {
+            log("=== Testing Firestore Write ===");
+            
+            if (!auth.currentUser) {
+                log("⚠️ Not logged in. Logging in as test user first...", 'warning');
+                await testAuthLogin();
+            }
+            
+            try {
+                const testData = {
+                    message: "Test book data from Firebase diagnostic",
+                    title: "Test Book Title",
+                    subject: "Mathematics",
+                    class: "10th Grade",
+                    price: 0,
+                    condition: "Good",
+                    userId: auth.currentUser.uid,
+                    userName: auth.currentUser.email,
+                    timestamp: new Date(),
+                    test: true
+                };
+                
+                log("Writing test data to Firestore...");
+                const docRef = await db.collection('books').add(testData);
+                log(`✅ Data written successfully! Document ID: ${docRef.id}`, 'success');
+                
+                // Also test in test collection
+                await db.collection('test').add({
+                    test: "Firestore is working!",
+                    timestamp: new Date(),
+                    user: auth.currentUser.email
+                });
+                log("✅ Test collection write successful!", 'success');
+                
+            } catch (error) {
+                log(`❌ Firestore write failed: ${error.message}`, 'error');
+                log(`This could be due to:`, 'error');
+                log(`1. Firestore not enabled in Firebase Console`, 'error');
+                log(`2. Incorrect security rules`, 'error');
+                log(`3. Network issues`, 'error');
+            }
+        }
+        
+        // Test 8: Firestore Read
+        async function testFirestoreRead() {
+            log("=== Testing Firestore Read ===");
+            
+            try {
+                log("Reading from 'test' collection...");
+                const snapshot = await db.collection('test')
+                    .orderBy('timestamp', 'desc')
+                    .limit(5)
+                    .get();
+                
+                if (snapshot.empty) {
+                    log("ℹ️ No documents found in 'test' collection", 'info');
+                } else {
+                    log(`✅ Found ${snapshot.size} document(s):`, 'success');
+                    snapshot.forEach(doc => {
+                        log(`  📄 ${doc.id}: ${JSON.stringify(doc.data())}`, 'info');
+                    });
+                }
+                
+            } catch (error) {
+                log(`❌ Firestore read failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Test 9: Create Collections
+        async function testCollections() {
+            log("=== Creating Required Collections ===");
+            
+            const collections = ['books', 'exchangeOffers', 'uploads', 'wishlist', 'games_scores'];
+            
+            for (const collection of collections) {
+                try {
+                    // Try to write a test document
+                    await db.collection(collection).doc('_init_test').set({
+                        initialized: true,
+                        timestamp: new Date(),
+                        message: `${collection} collection initialized`,
+                        test: true
+                    });
+                    log(`✅ ${collection} collection accessible`, 'success');
+                } catch (error) {
+                    log(`❌ ${collection} collection error: ${error.message}`, 'error');
+                }
+            }
+        }
+        
+        // Test 10: Storage Test
+        async function testStorage() {
+            log("=== Testing Storage ===");
+            
+            if (typeof storage === 'undefined') {
+                log("❌ Storage service not loaded", 'error');
+                return;
+            }
+            
+            try {
+                // Just test if we can get a reference
+                const storageRef = storage.ref();
+                log("✅ Storage reference obtained", 'success');
+                log(`Storage bucket: ${storageRef.bucket}`, 'info');
+                
+            } catch (error) {
+                log(`❌ Storage test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Cleanup: Delete Test Data
+        async function cleanupTestData() {
+            log("=== Cleaning Up Test Data ===");
+            
+            try {
+                // Delete test documents
+                const collections = ['books', 'test', 'exchangeOffers', 'uploads', 'wishlist', 'games_scores'];
+                
+                for (const collection of collections) {
+                    const snapshot = await db.collection(collection)
+                        .where('test', '==', true)
+                        .get();
+                    
+                    if (!snapshot.empty) {
+                        const batch = db.batch();
+                        snapshot.forEach(doc => {
+                            batch.delete(doc.ref);
+                        });
+                        await batch.commit();
+                        log(`✅ Deleted ${snapshot.size} test documents from ${collection}`, 'success');
+                    }
+                }
+                
+            } catch (error) {
+                log(`❌ Cleanup failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Cleanup: Delete Test Users
+        async function deleteTestUsers() {
+            log("=== Deleting Test Users ===");
+            
+            if (!auth.currentUser) {
+                log("⚠️ Not logged in", 'warning');
+                return;
+            }
+            
+            for (const testUser of testUsers) {
+                try {
+                    // First delete from Firestore
+                    await db.collection('users').doc(testUser.uid).delete();
+                    
+                    // Then delete auth user (requires recent login)
+                    if (auth.currentUser.email === testUser.email) {
+                        await auth.currentUser.delete();
+                        log(`✅ Deleted user: ${testUser.email}`, 'success');
+                    }
+                } catch (error) {
+                    log(`⚠️ Could not delete user ${testUser.email}: ${error.message}`, 'warning');
+                }
+            }
+            
+            testUsers = [];
+            updateStatus();
+        }
+        
+        // Initialize
+        window.onload = function() {
+            log("Firebase Diagnostic Test Ready!");
+            log("Click buttons to test each component");
+            updateStatus();
+        };
+    </script>
+</body>
+</html>

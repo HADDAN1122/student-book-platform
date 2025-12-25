@@ -1,0 +1,305 @@
+/* responsive.css - Mobile Fixes with Hamburger Menu */
+* {
+    box-sizing: border-box;
+}
+
+/* Hamburger Menu Styles */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1000;
+}
+
+.hamburger-menu span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #8a56ff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+.mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.mobile-nav {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%;
+    max-width: 300px;
+    height: 100%;
+    background: white;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 80px 20px 20px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.mobile-nav.active {
+    transform: translateX(0);
+}
+
+.mobile-nav a {
+    display: block;
+    padding: 15px;
+    margin: 10px 0;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.mobile-nav a:hover {
+    background: #f0f0ff;
+    color: #8a56ff;
+    transform: translateX(5px);
+}
+
+.mobile-user-info {
+    padding: 20px;
+    background: linear-gradient(135deg, #8a56ff 0%, #64ffda 100%);
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    /* Hide desktop navigation */
+    nav {
+        display: none !important;
+    }
+    
+    /* Show hamburger menu */
+    .hamburger-menu {
+        display: flex;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    
+    /* Show mobile navigation when active */
+    .mobile-nav.active,
+    .mobile-nav-overlay.active {
+        display: block;
+    }
+    
+    /* Fix header */
+    header {
+        padding: 15px 10px !important;
+        position: relative;
+        min-height: 70px;
+    }
+    
+    header h1 {
+        font-size: 1.5rem !important;
+        text-align: center;
+        margin: 0;
+        line-height: 1.2;
+        padding-right: 50px;
+    }
+    
+    /* User emoji button in mobile */
+    .user-menu-container {
+        position: static;
+        margin: 15px auto;
+        display: block;
+        text-align: center;
+    }
+    
+    .user-emoji-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+        margin: 0 auto;
+    }
+    
+    /* Mobile dropdown adjustments */
+    .user-dropdown {
+        position: fixed;
+        top: 70px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 90%;
+        max-width: 300px;
+        z-index: 1001;
+    }
+    
+    /* Fix forms */
+    .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+    
+    .exchange-pair {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+    }
+    
+    /* Fix game cards */
+    .games-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .memory-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    /* Fix exchange cards */
+    .exchange-details {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+    
+    /* Fix game headers */
+    .game-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .game-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .stat-box {
+        min-width: 100px;
+        margin: 5px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .upload-form-container,
+    .exchange-container,
+    .game-area {
+        padding: 15px !important;
+        margin: 10px !important;
+    }
+    
+    h1 {
+        font-size: 1.8rem !important;
+    }
+    
+    h2 {
+        font-size: 1.5rem !important;
+    }
+    
+    h3 {
+        font-size: 1.2rem !important;
+    }
+    
+    /* Mobile nav adjustments */
+    .mobile-nav {
+        width: 85%;
+    }
+    
+    .mobile-nav a {
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+    
+    /* Make buttons touch-friendly */
+    button, .btn, a.btn {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+    
+    /* Fix input fields */
+    input, select, textarea {
+        font-size: 16px !important; /* Prevents zoom on iOS */
+        padding: 12px !important;
+    }
+    
+    /* Fix file upload area */
+    .file-upload-area {
+        padding: 20px 10px !important;
+    }
+    
+    /* Fix hero sections */
+    .upload-hero,
+    .exchange-hero,
+    .games-hero {
+        padding: 40px 15px !important;
+    }
+    
+    .upload-hero h1,
+    .exchange-hero h1,
+    .games-hero h1 {
+        font-size: 2rem !important;
+    }
+    
+    /* Fix stats displays */
+    .upload-stats,
+    .exchange-stats,
+    .games-stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .upload-stat,
+    .exchange-stat,
+    .game-stat {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .games-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .exchange-container {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .exchange-sidebar {
+        margin-top: 30px;
+    }
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    input, textarea {
+        font-size: 16px !important;
+    }
+}

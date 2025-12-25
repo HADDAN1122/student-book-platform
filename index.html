@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>student platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="responsive.css">
+
+</head>
+<body>
+      <header>
+
+
+
+
+        <h1>Student Platform</h1>
+    </a>
+    <nav>
+        
+        
+        <a href="search.html" class="active">Search</a>
+        <a href="admin.html">Upload</a>
+         <a href="exchange.html">Exchange Book</a>
+        <a href="help.html" class="active">help</a>
+        <a href="login.html" class="login-circle">Login</a>
+    </nav>
+    <hr>
+
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-menu" id="hamburgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-user-info" id="mobileUserInfo">
+            <div style="font-size: 2rem; margin-bottom: 10px;">👤</div>
+            <div id="mobileUserName">Guest User</div>
+            <div id="mobileUserEmail" style="font-size: 0.9rem; opacity: 0.9;">Not logged in</div>
+        </div>
+        
+        <a href="index.html">🏠 Home</a>
+        <a href="sell.html">💰 Sell & Buy</a>
+        <a href="exchange.html">🔄 Exchange Book</a>
+        <a href="search.html">🔍 Search Books</a>
+        <a href="profile.html" id="mobileProfileLink" style="display: none;">👤 My Profile</a>
+        <a href="login.html" id="mobileLoginLink">🔑 Login</a>
+        <a href="register.html" id="mobileRegisterLink">📝 Register</a>
+        <a href="#" id="mobileLogoutLink" style="display: none; color: #ff4444;">🚪 Logout</a>
+    </div>
+    
+    
+    <hr>
+
+
+ 
+    
+    
+    
+</header>
+   
+
+  <!-- ANIMATED WELCOME SECTION -->
+<section class="crazy-welcome">
+  <div class="welcome-container">
+    <div class="welcome-text">
+      <span class="welcome-word">HELLO</span>
+      <span class="welcome-word">,</span>
+      <span class="welcome-word">I'M</span>
+      <span class="welcome-word">HASSAN.</span>
+      <span class="welcome-word">welcome to student platform.</span>
+    </div>
+    <div class="welcome-subtitle">
+      
+      <div class="scrolling-line"></div>
+    </div>
+  </div>
+</section>
+
+
+</section>
+
+<!-- FEATURE GRID SECTION -->
+<section class="feature-grid-section">
+  <h2>Quick Actions</h2>
+  <p class="section-subtitle">Choose what you want to do</p>
+  
+  <div class="feature-grid">
+    <!-- Sell Book Card -->
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <h3>Sell & buy</h3>
+      <p>Post your used books for sale & make some $$</p>
+      <a href="sell.html" class="feature-btn">Start →</a>
+    </div>
+
+    <!-- Exchange Book Card -->
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 17l4 4 4-4"/>
+          <path d="M12 12v9"/>
+          <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/>
+        </svg>
+      </div>
+      <h3>Exchange tome</h3>
+      <p>Trade books with fellow students instead of buying</p>
+      <a href="exchange.html" class="feature-btn"> Exchange tome →</a>
+    </div>
+
+    <!-- Upload Book Card -->
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <h3>Upload Book</h3>
+      <p>Upload study materials and documents for sharing</p>
+      <a href="admin.html" class="feature-btn">Upload Now →</a>
+    </div>
+
+    <!-- Play Game Card -->
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="10" r="3"/>
+          <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>
+        </svg>
+      </div>
+      <h3>Play Game</h3>
+      <p>Take a break with fun educational games</p>
+      <a href="games.html" class="feature-btn">Play Games →</a>
+    </div>
+    <!-- ===== ADD THESE 4 NEW CARDS INSIDE THE EXISTING .feature-grid div ===== -->
+
+<!-- Books Collection Card -->
+<div class="feature-card">
+  <div class="feature-icon">
+    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      <path d="M9 8h6"/>
+      <path d="M9 12h6"/>
+      <path d="M9 16h4"/>
+    </svg>
+  </div>
+  <h3>Books Collection</h3>
+  <p>Browse textbooks, references, and rare editions across all versions</p>
+  <a href="library.html" class="feature-btn">Explore Books →</a>
+</div>
+
+<!-- Available (Seconds) Card -->
+<div class="feature-card">
+  <div class="feature-icon">
+    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M9 12l2 2 4-4"/>
+      <path d="M12 8v4"/>
+      <path d="M12 16h.01"/>
+    </svg>
+  </div>
+  <h3>Available stuff </h3>
+  <p>Premium verified books in second hand with quality guarantee</p>
+  <a href="available.html" class="feature-btn">View stuff →</a>
+</div>
+
+<!-- Learning Services Card -->
+<div class="feature-card">
+  <div class="feature-icon">
+    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      <path d="M8 14v6"/>
+      <path d="M16 14v6"/>
+    </svg>
+  </div>
+  <h3>Learning Services</h3>
+  <p>Tutoring with best tutors across Pakistan and career guidance</p>
+  <a href="tutors.html" class="feature-btn">Access Services →</a>
+ </div>
+ </div>
+</section>
+
+
+
+
+
+
+
+
+<section class="hero">
+  <!-- Full Width Bold Paragraph Container -->
+  <div class="bold-paragraph-container">
+    <div class="paragraph-content">
+      <h2 class="service-heading">OUR SERVICES</h2>
+      <p class="bold-paragraph">
+        Welcome to Student Book Platform, the ultimate destination for Pakistani students to revolutionize their academic journey through affordable, accessible, and sustainable book exchange. We understand the financial challenges students face with expensive textbooks, which is why we've built a secure, user-friendly marketplace dedicated exclusively to buying, selling, and exchanging academic materials. Whether you're looking to sell your used course books, find affordable textbooks for the upcoming semester, or exchange resources with peers, our platform provides a trusted space where every transaction is secure, transparent, and student-focused.
+        
+       Our verification system ensures all users are genuine students, maintaining a safe environment for everyone. With features like category filters,across all major educationalboards  (Punjab Board, FBISE, Cambridge,kpk) in Pakistan, Student Book Platform is your partner in academic success. Start exploring today and discover how simple, smart, and rewarding managing your educational resources can be.
+      </p>
+      
+      
+    </div>
+  </div>
+  
+  
+</section>
+
+<!-- SIMPLE FOOTER -->
+<footer class="simple-footer">
+  <p>© 2026 Student Platform. All rights reserved.</p>
+  <div class="footer-hover-sections">
+    <div class="hover-section contact-hover">
+      <h4> Contact</h4>
+      <p>bannu (kpk), Pakistan</p>
+      <p>+92 3315072123</p>
+      <p>hassanjalilk@gmail.com</p>
+    </div>
+    
+    <div class="hover-section about-hover">
+      <h4>HELLO!</h4>
+      <p>Aight, Hassan Jalil here. Did my thing in ICS, now out here tryna taste the whole damn world. </p>
+    </div>
+    
+    <div class="hover-section legal-hover">
+      <h4> Legal</h4>
+      <p><a href="terms.html">Terms & privacy </a> • <a href="cookies.html">Cookies</a></p>
+    </div>
+  </div>
+  
+  <!-- Main Footer Bar -->
+  <div class="footer-main">
+    <div class="message-area">
+  <input 
+    type="text" 
+    class="message-input" 
+    placeholder="WhatsApp me..."
+    id="whatsappMessage"
+  >
+  <button class="send-btn" onclick="sendToWhatsApp()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.652a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
+    </svg>
+    WhatsApp
+  </button>
+</div>
+    
+    <div class="footer-right">
+      <div class="copyright">
+        © 2026 Student Platform
+      </div>
+    </div>
+  </div>
+</footer> 
+
+ 
+</main>
+<!-- FIREBASE SDKs - MUST BE IN THIS ORDER -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+<!-- YOUR FIREBASE CONFIG -->
+<script src="firebase.js"></script>
+
+<!-- YOUR AUTH FUNCTIONS -->
+<script src="auth.js"></script>
+
+
+<script>
+
+  // Shrink header on scroll
+window.addEventListener("scroll", function() {
+  const header = document.querySelector("header");
+  if (window.scrollY > 50) {
+    header.classList.add("shrink");
+  } else {
+    header.classList.remove("shrink");
+  }
+});
+
+</script>
+
+<script>
+  // Hamburger Menu Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    const mobileProfileLink = document.getElementById('mobileProfileLink');
+    const mobileLoginLink = document.getElementById('mobileLoginLink');
+    const mobileRegisterLink = document.getElementById('mobileRegisterLink');
+    const mobileLogoutLink = document.getElementById('mobileLogoutLink');
+    const mobileUserName = document.getElementById('mobileUserName');
+    const mobileUserEmail = document.getElementById('mobileUserEmail');
+    
+    if (hamburgerMenu) {
+        // Toggle mobile menu
+        hamburgerMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+            mobileNavOverlay.classList.toggle('active');
+        });
+        
+        // Close menu when clicking overlay
+        mobileNavOverlay.addEventListener('click', function() {
+            closeMobileMenu();
+        });
+        
+        // Close menu when clicking a link
+        const mobileLinks = mobileNav.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                closeMobileMenu();
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!mobileNav.contains(e.target) && !hamburgerMenu.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+    }
+    
+    function closeMobileMenu() {
+        hamburgerMenu.classList.remove('active');
+        mobileNav.classList.remove('active');
+        mobileNavOverlay.classList.remove('active');
+    }
+    
+    // Update mobile nav based on auth status
+    auth.onAuthStateChanged(user => {
+        if (user && mobileProfileLink) {
+            // User is logged in
+            mobileProfileLink.style.display = 'block';
+            mobileLoginLink.style.display = 'none';
+            mobileRegisterLink.style.display = 'none';
+            mobileLogoutLink.style.display = 'block';
+            
+            // Update user info
+            const displayName = user.displayName || user.email.split('@')[0];
+            mobileUserName.textContent = displayName;
+            mobileUserEmail.textContent = user.email;
+        } else if (mobileProfileLink) {
+            // User is not logged in
+            mobileProfileLink.style.display = 'none';
+            mobileLoginLink.style.display = 'block';
+            mobileRegisterLink.style.display = 'block';
+            mobileLogoutLink.style.display = 'none';
+            
+            // Reset user info
+            mobileUserName.textContent = 'Guest User';
+            mobileUserEmail.textContent = 'Not logged in';
+        }
+    });
+    
+    // Mobile logout function
+    if (mobileLogoutLink) {
+        mobileLogoutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            logoutUser();
+        });
+    }
+});
+</script>
+
+
+
+<script>
+// Shrink header on scroll
+window.addEventListener('scroll', function() {
+  const header = document.querySelector('header');
+  
+  if (window.scrollY > 80) {
+    header.classList.add('shrink');
+  } else {
+    header.classList.remove('shrink');
+  }
+});
+</script>
+
+<script>
+  // Simulate sending message (without opening WhatsApp)
+  function sendToWhatsApp() {
+    const messageInput = document.getElementById('whatsappMessage');
+    const message = messageInput.value.trim();
+    
+    if (message === '') {
+      alert('Please type a message first');
+      messageInput.focus();
+      return;
+    }
+    
+    // Show sending animation
+    const sendBtn = document.querySelector('.send-btn');
+    const originalText = sendBtn.innerHTML;
+    sendBtn.innerHTML = 'Sending...';
+    sendBtn.disabled = true;
+    
+    // Simulate sending (2 second delay)
+    setTimeout(() => {
+      // Show success message
+      alert(`Message sent to WhatsApp: "${message}"\n\nNote: This is a demo. In real setup, this would send directly to 03315072123 via WhatsApp API.`);
+      
+      // Reset button
+      sendBtn.innerHTML = originalText;
+      sendBtn.disabled = false;
+      
+      // Clear input
+      messageInput.value = '';
+      messageInput.focus();
+    }, 2000);
+  }
+  
+  // Press Enter to send
+  document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.getElementById('whatsappMessage');
+    
+    messageInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendToWhatsApp();
+      }
+    });
+  });
+</script>
+</body>
+</html>

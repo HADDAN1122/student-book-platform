@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Books - Student Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Student Platform</h1>
+        <nav>
+            <a href="sell.html">Sell & Buy</a>
+            <a href="exchange.html">Exchange Book</a>
+            <a href="admin.html">Upload</a>
+            <a href="search.html">Search</a>
+            <a href="index.html">Home</a>
+            
+        </nav>
+        <hr>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="available-hero">
+        <div class="available-hero-content">
+            <h1>Available stuff </h1>
+            <p class="available-subtitle">Browse books posted by fellow students. Contact sellers directly via WhatsApp!</p>
+            
+            <div class="available-stats">
+                <div class="stat">
+                    <div class="stat-number" id="totalBooks">0</div>
+                    <div class="stat-label">Books Available</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Free Platform</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">Direct</div>
+                    <div class="stat-label">Seller Contact</div>
+                </div>
+            </div>
+            
+            <!-- Quick Notice -->
+            <div class="platform-notice">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>Note:</strong> Contact sellers directly via WhatsApp. Arrange payment & delivery between yourselves. Platform is completely free!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEARCH AND FILTERS -->
+    <section class="available-filters">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search books by title, subject, or author...">
+                <button onclick="searchBooks()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="filters-container">
+            <div class="filter-group">
+                <label><i class="fas fa-book"></i> Subject</label>
+                <select id="subjectFilter" onchange="filterBooks()">
+                    <option value="all">All Subjects</option>
+                    <option value="physics">Physics</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="math">Mathematics</option>
+                    <option value="biology">Biology</option>
+                    <option value="english">English</option>
+                    <option value="urdu">Urdu</option>
+                    <option value="computer">Computer Science</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label><i class="fas fa-graduation-cap"></i> Class</label>
+                <select id="classFilter" onchange="filterBooks()">
+                    <option value="all">All Classes</option>
+                    <option value="9">9th</option>
+                    <option value="10">10th</option>
+                    <option value="11">11th</option>
+                    <option value="12">12th</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label><i class="fas fa-tag"></i> Price Range</label>
+                <select id="priceFilter" onchange="filterBooks()">
+                    <option value="all">Any Price</option>
+                    <option value="0-500">Under ₨500</option>
+                    <option value="500-1000">₨500 - ₨1000</option>
+                    <option value="1000-2000">₨1000 - ₨2000</option>
+                    <option value="2000+">Above ₨2000</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label><i class="fas fa-sort-amount-down"></i> Sort By</label>
+                <select id="sortBy" onchange="sortBooks()">
+                    <option value="newest">Newest First</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOKS GRID -->
+    <section class="available-books-grid-section">
+        <div class="books-grid-header">
+            <h2>Available Books for Purchase</h2>
+            <div class="how-to-buy">
+                <i class="fas fa-question-circle"></i>
+                <div class="how-to-tooltip">
+                    <strong>How to Buy:</strong>
+                    <ol>
+                        <li>Find a book you want</li>
+                        <li>Click "Contact Seller"</li>
+                        <li>Message via WhatsApp</li>
+                        <li>Arrange payment & delivery</li>
+                        <li>Meet/ship the book</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Books will load here -->
+        <div class="books-grid" id="booksGrid">
+            <div class="loading-state">
+                <div class="loader"></div>
+                <p>Loading available books...</p>
+            </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="load-more-container">
+            <button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreBooks()" style="display: none;">
+                Load More Books
+            </button>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works-simple">
+        <h2>How It Works</h2>
+        <div class="steps-simple">
+            <div class="step-simple">
+                <div class="step-icon"><i class="fas fa-search"></i></div>
+                <h3>Find Book</h3>
+                <p>Browse available books using filters</p>
+            </div>
+            <div class="step-simple">
+                <div class="step-icon"><i class="fab fa-whatsapp"></i></div>
+                <h3>Contact Seller</h3>
+                <p>Click contact button to message via WhatsApp</p>
+            </div>
+            <div class="step-simple">
+                <div class="step-icon"><i class="fas fa-handshake"></i></div>
+                <h3>Negotiate</h3>
+                <p>Discuss price, delivery, and payment method</p>
+            </div>
+            <div class="step-simple">
+                <div class="step-icon"><i class="fas fa-book"></i></div>
+                <h3>Get Book</h3>
+                <p>Meet locally or arrange shipping</p>
+            </div>
+        </div>
+        
+        <!-- Important Notes -->
+        <div class="important-notes">
+            <h3><i class="fas fa-exclamation-triangle"></i> Important Notes:</h3>
+            <ul>
+                <li>💬 <strong>All communication happens via WhatsApp</strong> between buyer and seller</li>
+                <li>💰 <strong>Payment arrangements are private</strong> between buyer and seller</li>
+                <li>🚚 <strong>Delivery/shipping is arranged</strong> by the seller and buyer</li>
+                <li>🆓 <strong>Platform is completely free</strong> - no commissions or fees</li>
+                <li>⚠️ <strong>Be cautious</strong> - meet in safe public places for handovers</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SIMPLE FOOTER -->
+    <footer class="simple-footer">
+        <div class="footer-hover-sections">
+            <div class="hover-section contact-hover">
+                <h4>Contact</h4>
+                <p>bannu (kpk), Pakistan</p>
+                <p>+92 3315072123</p>
+                <p>hassanjalilk@gmail.com</p>
+            </div>
+            
+            <div class="hover-section about-hover">
+                <h4>ℹ About</h4>
+                <p>Student Book Platform - Connecting students across Pakistan</p>
+            </div>
+            
+            <div class="hover-section legal-hover">
+                <h4>Legal</h4>
+                <p><a href="#">Terms</a> • <a href="#">Privacy</a> • <a href="#">Cookies</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-main">
+            <div class="message-area">
+                <input type="text" class="message-input" placeholder="WhatsApp me..." id="whatsappMessage">
+                <button class="send-btn" onclick="sendToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+            </div>
+            
+            <div class="footer-right">
+                <div class="copyright">
+                    © 2024 Student Book Platform
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="firebase.js"></script>
+
+    <!-- SIMPLE SCRIPT -->
+    <script>
+        let allBooks = [];
+        let lastVisible = null;
+        let loading = false;
+
+        // Load books from Firebase
+        function loadAvailableBooks(loadMore = false) {
+            if (loading) return;
+            loading = true;
+
+            const booksGrid = document.getElementById('booksGrid');
+            if (!loadMore) {
+                booksGrid.innerHTML = `
+                    <div class="loading-state">
+                        <div class="loader"></div>
+                        <p>Loading available books...</p>
+                    </div>
+                `;
+            }
+
+            let query = db.collection("books")
+                .where("status", "==", "available")
+                .orderBy("createdAt", "desc");
+
+            if (loadMore && lastVisible) {
+                query = query.startAfter(lastVisible);
+            }
+
+            query.limit(12).get()
+                .then((querySnapshot) => {
+                    if (!loadMore) {
+                        booksGrid.innerHTML = '';
+                        allBooks = [];
+                    }
+
+                    if (querySnapshot.empty) {
+                        if (!loadMore) {
+                            booksGrid.innerHTML = `
+                                <div class="no-books">
+                                    <i class="fas fa-book"></i>
+                                    <h3>No books available yet</h3>
+                                    <p>Be the first to sell your books!</p>
+                                    <a href="sell.html" class="feature-btn">Sell Your Book</a>
+                                </div>
+                            `;
+                        }
+                        document.getElementById('loadMoreBtn').style.display = 'none';
+                        loading = false;
+                        return;
+                    }
+
+                    querySnapshot.forEach((doc) => {
+                        const book = doc.data();
+                        const bookId = doc.id;
+                        allBooks.push({ id: bookId, ...book });
+                        
+                        const bookCard = createBookCard(book, bookId);
+                        booksGrid.innerHTML += bookCard;
+                    });
+
+                    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+                    document.getElementById('loadMoreBtn').style.display = 
+                        querySnapshot.size === 12 ? 'block' : 'none';
+                    document.getElementById('totalBooks').textContent = allBooks.length;
+                    
+                    loading = false;
+                })
+                .catch((error) => {
+                    console.error("Error loading books: ", error);
+                    booksGrid.innerHTML = `
+                        <div class="error-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error loading books</h3>
+                            <p>Please check your connection</p>
+                            <button class="feature-btn" onclick="loadAvailableBooks()">Retry</button>
+                        </div>
+                    `;
+                    loading = false;
+                });
+        }
+
+        // Create book card HTML
+        function createBookCard(book, bookId) {
+            const price = book.price ? `₨${book.price}` : 'Negotiable';
+            const sellerName = book.sellerName || 'Student Seller';
+            const sellerPhone = book.sellerPhone || '0315072123'; // Default to your number
+            
+            // Book emoji based on subject
+            let bookEmoji = '📚';
+            const subject = book.subject ? book.subject.toLowerCase() : '';
+            
+            if (subject.includes('math')) bookEmoji = '🧮';
+            else if (subject.includes('physic')) bookEmoji = '⚛️';
+            else if (subject.includes('chem')) bookEmoji = '🧪';
+            else if (subject.includes('bio')) bookEmoji = '🧬';
+            else if (subject.includes('english')) bookEmoji = '📖';
+            else if (subject.includes('urdu')) bookEmoji = '📜';
+            else if (subject.includes('computer')) bookEmoji = '💻';
+            
+            return `
+                <div class="book-card-simple" data-book-id="${bookId}">
+                    <div class="book-image-simple">
+                        ${book.imageUrl ? 
+                            `<img src="${book.imageUrl}" alt="${book.title}" 
+                                  onerror="this.src=''; this.parentElement.innerHTML='<div class=\"book-emoji-simple\">${bookEmoji}</div>'">` :
+                            `<div class="book-emoji-simple">${bookEmoji}</div>`
+                        }
+                        ${book.condition === 'New' ? '<span class="condition-new">New</span>' : ''}
+                    </div>
+                    
+                    <div class="book-info-simple">
+                        <h3 class="book-title-simple">${book.title || 'Untitled Book'}</h3>
+                        
+                        <div class="book-meta-simple">
+                            ${book.subject ? `<span><i class="fas fa-book"></i> ${book.subject}</span>` : ''}
+                            ${book.class ? `<span><i class="fas fa-graduation-cap"></i> Class ${book.class}</span>` : ''}
+                            ${book.board ? `<span><i class="fas fa-university"></i> ${book.board}</span>` : ''}
+                        </div>
+                        
+                        <div class="book-price-simple">
+                            <i class="fas fa-tag"></i> ${price}
+                        </div>
+                        
+                        <div class="book-footer-simple">
+                            <div class="seller-info-simple">
+                                <span class="seller-name-simple">
+                                    <i class="fas fa-user"></i> ${sellerName}
+                                </span>
+                            </div>
+                            <button class="contact-btn-simple" onclick="contactSeller('${sellerName}', '${sellerPhone}', '${book.title || 'Book'}', ${book.price || 0})">
+                                <i class="fab fa-whatsapp"></i> Contact Seller
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Contact seller via WhatsApp
+        function contactSeller(sellerName, sellerPhone, bookTitle, price) {
+            // Default message template
+            const message = `Hi ${sellerName}! I saw your book "${bookTitle}" (₨${price}) on Student Book Platform. Is it still available?`;
+            const whatsappUrl = `https://wa.me/${sellerPhone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Search books
+        function searchBooks() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const books = document.querySelectorAll('.book-card-simple');
+            let visibleCount = 0;
+            
+            books.forEach(book => {
+                const title = book.querySelector('.book-title-simple').textContent.toLowerCase();
+                const details = book.querySelector('.book-meta-simple').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || details.includes(searchTerm)) {
+                    book.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    book.style.display = 'none';
+                }
+            });
+        }
+
+        // Filter books
+        function filterBooks() {
+            const subject = document.getElementById('subjectFilter').value;
+            const classFilter = document.getElementById('classFilter').value;
+            const priceRange = document.getElementById('priceFilter').value;
+            
+            const books = document.querySelectorAll('.book-card-simple');
+            
+            books.forEach(book => {
+                const bookText = book.textContent.toLowerCase();
+                let show = true;
+                
+                // Subject filter
+                if (subject !== 'all' && !bookText.includes(subject)) {
+                    show = false;
+                }
+                
+                // Class filter
+                if (classFilter !== 'all' && !bookText.includes(`class ${classFilter}`)) {
+                    show = false;
+                }
+                
+                book.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        // Sort books
+        function sortBooks() {
+            const sortBy = document.getElementById('sortBy').value;
+            // Simple client-side sorting
+            if (sortBy === 'price-low') {
+                // Sort by price low to high
+            } else if (sortBy === 'price-high') {
+                // Sort by price high to low
+            }
+        }
+
+        // Load more books
+        function loadMoreBooks() {
+            loadAvailableBooks(true);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAvailableBooks();
+            
+            // Refresh every 30 seconds
+            setInterval(() => {
+                loadAvailableBooks();
+            }, 30000);
+        });
+    </script>
+
+
+<script>// Header shrink on scroll for mobile
+let lastScrollTop = 0;
+const header = document.querySelector('header');
+const shrinkThreshold = 50; // Pixels to scroll before shrinking
+
+window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (window.innerWidth <= 768) { // Mobile only
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+        
+        // Optional: Hide header on scroll down, show on scroll up
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up
+            header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollTop = scrollTop;
+    } else {
+        // Desktop behavior (keep your existing desktop shrink logic)
+        if (scrollTop > shrinkThreshold) {
+            header.classList.add('shrink');
+        } else {
+            header.classList.remove('shrink');
+        }
+    }
+});
+
+// Optional: Add parallax-like effect for mobile
+window.addEventListener('scroll', function() {
+    if (window.innerWidth <= 768) {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.3; // Adjust this value for intensity
+        
+        // Add subtle background color change on scroll
+        if (header && scrolled > 20) {
+            const opacity = Math.min(scrolled / 200, 0.95);
+            header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+            header.style.backdropFilter = 'blur(10px)';
+        } else if (header) {
+            header.style.backgroundColor = 'white';
+            header.style.backdropFilter = 'none';
+        }
+    }
+});</script>
+
+
+</body>
+</html>
